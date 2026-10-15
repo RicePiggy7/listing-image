@@ -1,0 +1,145 @@
+[
+  {
+    "id": "trigger-A-01",
+    "description": "信号 A：动图关键词",
+    "input": "帮我做一个产品旋转动图，展示蓝牙耳机的各个角度",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「动图」是信号 A 关键词，直接路由到 mode-bulk"
+  },
+  {
+    "id": "trigger-A-02",
+    "description": "信号 A：批量翻译关键词",
+    "input": "我有 20 张中文图，帮我批量翻译成英文版本",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「批量翻译」是信号 A 关键词"
+  },
+  {
+    "id": "trigger-A-03",
+    "description": "信号 A：换品关键词",
+    "input": "用现有套图的版式，把产品换成新款耳机",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「换品」属于生成型批量，信号 A"
+  },
+  {
+    "id": "trigger-B-01",
+    "description": "信号 B：有现成图 + 审查意图",
+    "input": "这是我现在的主图，帮我看看有没有问题",
+    "expected_route": "modes/mode-review.md",
+    "expected_signal": "B",
+    "notes": "「帮我看看有没有问题」= 审查意图，有现成图"
+  },
+  {
+    "id": "trigger-B-02",
+    "description": "信号 B：明确改稿意图",
+    "input": "这张图上架后被 Amazon 拒了，帮我检查一下什么原因",
+    "expected_route": "modes/mode-review.md",
+    "expected_signal": "B",
+    "notes": "「检查」+ 已有图，信号 B"
+  },
+  {
+    "id": "trigger-C-01",
+    "description": "信号 C：明确单张",
+    "input": "帮我做一张蓝牙耳机的白底主图",
+    "expected_route": "modes/mode-single.md",
+    "expected_signal": "C",
+    "notes": "「一张」+ 无套图需求，信号 C"
+  },
+  {
+    "id": "trigger-C-02",
+    "description": "信号 C：单图无套图语境",
+    "input": "快速帮我生成一张产品场景图，就一张，放 Instagram 用",
+    "expected_route": "modes/mode-single.md",
+    "expected_signal": "C",
+    "notes": "「就一张」明确单图，信号 C"
+  },
+  {
+    "id": "trigger-D-01",
+    "description": "信号 D：套图任务",
+    "input": "我要上架一个蓝牙耳机，帮我做一套 Amazon 主图，大概 5 张",
+    "expected_route": "modes/mode-full.md",
+    "expected_signal": "D",
+    "notes": "套图/Listing 任务，信号 D，主路径"
+  },
+  {
+    "id": "trigger-D-02",
+    "description": "信号 D：有产品资料想做图",
+    "input": "我有产品规格表和品牌手册，想做一套完整的 Listing 图",
+    "expected_route": "modes/mode-full.md",
+    "expected_signal": "D",
+    "notes": "有产品资料 + 想做图，信号 D"
+  },
+  {
+    "id": "platform-domestic-01",
+    "description": "平台分流：国内平台",
+    "input": "帮我做淘宝主图",
+    "expected_platform_path": "domestic",
+    "expected_notice": "检测到目标平台为 [淘宝]，技术预检脚本当前仅覆盖跨境平台",
+    "notes": "淘宝 → 国内路径，Step 1 立即告知，跳过技术预检"
+  },
+  {
+    "id": "platform-unknown-01",
+    "description": "平台分流：平台未知默认跨境",
+    "input": "帮我做一张产品主图",
+    "expected_platform_path": "cross-border",
+    "notes": "平台未知 → 默认跨境路径（更严格）"
+  },
+  {
+    "id": "signal-conflict-B-wins-01",
+    "description": "信号冲突：审查意图应优先于编辑关键词",
+    "input": "帮我检查这张换色图，看看有没有问题",
+    "expected_route": "modes/mode-review.md",
+    "expected_signal": "B",
+    "notes": "「检查」+ 审查意图优先于「换色」；信号 B 应在信号 A 之前匹配"
+  },
+  {
+    "id": "signal-A-no-review-01",
+    "description": "信号 A：有现成图 + 背景替换描述",
+    "input": "把这张图的白底改成米色背景",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「改成米色背景」= 背景替换操作，命中信号 A 语义扩展（背景改成/换成 X），走 mode-bulk；无审查词，不触发信号 B"
+  },
+  {
+    "id": "platform-social-01",
+    "description": "平台分流：社媒平台跳过技术预检",
+    "input": "帮我做一张 Instagram 产品图",
+    "expected_platform_path": "social-media",
+    "expected_notice": "该平台无纯白底 / 产品占比技术预检要求，跳过技术预检",
+    "notes": "Instagram 不在跨境也不在国内列表，走社媒路径，技术预检不适用"
+  },
+  {
+    "id": "signal-A-localization-01",
+    "description": "信号 A：本地化编辑关键词",
+    "input": "帮我做一批图片的本地化，换成日语版本",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「本地化」是信号 A 关键词，应路由到 mode-bulk 的编辑型批量"
+  },
+  {
+    "id": "trigger-B-repair-01",
+    "description": "信号 B：修复意图（反光修复）",
+    "input": "帮我把这张图的反光修一下",
+    "expected_route": "modes/mode-review.md",
+    "expected_signal": "B",
+    "notes": "有现成图 + 「修一下」= 明确诊断/修复意图，无批量关键词，命中信号 B 修复分支"
+  },
+  {
+    "id": "trigger-B-repair-02",
+    "description": "信号 B：修复意图（改掉问题）",
+    "input": "这张主图被 Amazon 拒了，帮我改掉白底不纯的问题",
+    "expected_route": "modes/mode-review.md",
+    "expected_signal": "B",
+    "notes": "「改掉…问题」= 诊断型修复意图，有现成图，无批量词，命中信号 B"
+  },
+  {
+    "id": "signal-A-bg-replace-01",
+    "description": "信号 A vs 信号 B：背景替换走信号 A",
+    "input": "帮我把这张图的背景改成米色",
+    "expected_route": "modes/mode-bulk.md",
+    "expected_signal": "A",
+    "notes": "「改成米色背景」是背景替换操作，属信号 A 换背景；「帮我改」不在信号 B 修复词表中（已移除），排除词表覆盖背景替换语义，走 mode-bulk"
+  }
+]

@@ -1,0 +1,163 @@
+[
+  {
+    "id": "fab-map-01",
+    "description": "蓝牙耳机主图 — 完整 FAB 四段含降级",
+    "input": {
+      "feature": "蓝牙 5.3 芯片，续航 50 小时，主动降噪",
+      "feature_evidence": "已确认，来自产品规格表",
+      "advantage": "相比蓝牙 5.0 连接更稳定，续航比同价位产品长 20 小时",
+      "advantage_evidence": "待补证：对比数据无来源",
+      "benefit": "长途旅行无需频繁充电，嘈杂环境也能专注听音乐",
+      "benefit_evidence": "有依据，可由参数推导",
+      "evidence_items": ["通过 CE 认证（已确认）", "实验室测试降噪效果 -42dB（待补证）"],
+      "platform": "Amazon US",
+      "scene_template": "hero-image.json"
+    },
+    "expected_output": {
+      "subject": "wireless over-ear headphones, Bluetooth 5.3 chipset, 50-hour battery life, active noise cancellation",
+      "important_details_must_include": [
+        "Stable connection compared to Bluetooth 5.0",
+        "outstanding battery life among similar products",
+        "ideal for long trips without frequent charging",
+        "effective active noise cancellation"
+      ],
+      "important_details_must_exclude": [
+        "20 hours longer",
+        "-42dB",
+        "42dB"
+      ],
+      "constraints_must_include": [
+        "RGB(255,255,255)",
+        "85%",
+        "CE certified",
+        "no text",
+        "do not include"
+      ]
+    },
+    "expected_demotion_log": [
+      "「续航比同价位产品长 20 小时」→「同类产品中续航优秀」",
+      "「降噪效果 -42dB」→「有效降噪」"
+    ]
+  },
+  {
+    "id": "fab-map-02",
+    "description": "Evidence 路径判断 — 认证进 constraints，工艺进 important_details",
+    "input": {
+      "feature": "竹纤维材质，500ml 容量",
+      "feature_evidence": "已确认",
+      "advantage": "比塑料杯更轻，握感更好",
+      "advantage_evidence": "有依据",
+      "benefit": "户外携带方便，不烫手",
+      "benefit_evidence": "有依据",
+      "evidence_items": [
+        "通过 FDA 食品接触材料认证（已确认）",
+        "越南手工编织工艺（已确认）"
+      ],
+      "platform": "Amazon US",
+      "scene_template": "lifestyle-scene.json"
+    },
+    "expected_output": {
+      "important_details_must_include": ["handcrafted", "hand-woven", "Vietnam"],
+      "constraints_must_include": ["FDA"]
+    },
+    "notes": "FDA 认证进 constraints verification note；「手工编织工艺」进 important_details 末尾"
+  },
+  {
+    "id": "fab-map-03",
+    "description": "冲突优先级 — 平台规范覆盖 locked_immutable",
+    "input": {
+      "feature": "陶瓷不粘锅，26cm",
+      "feature_evidence": "已确认",
+      "advantage": "涂层更耐刮",
+      "advantage_evidence": "有依据",
+      "benefit": "轻松清洁，日常烹饪更省心",
+      "benefit_evidence": "有依据",
+      "evidence_items": [],
+      "platform": "Amazon US",
+      "locked_immutable": "background: warm cream #F5EFE0",
+      "scene_template": "hero-image.json"
+    },
+    "expected_output": {
+      "constraints_must_include": ["pure white background RGB(255,255,255)"],
+      "constraints_must_exclude": ["cream", "F5EFE0", "warm"]
+    },
+    "expected_conflict_resolution": "locked_immutable background 被平台规范覆盖，强制注入纯白底",
+    "notes": "平台强制技术规范 > locked_immutable，Lock 中的 background 被删除"
+  },
+  {
+    "id": "fab-map-04",
+    "description": "禁止状态拦截 — 医疗功效宣称不进 Prompt",
+    "input": {
+      "feature": "按摩头枕，三档强度",
+      "feature_evidence": "已确认",
+      "advantage": "可调节强度适合不同需求",
+      "advantage_evidence": "有依据",
+      "benefit": "治疗颈椎病，缓解慢性疼痛",
+      "benefit_evidence": "禁止：医疗功效宣称，产品无医疗器械资质",
+      "evidence_items": [],
+      "platform": "Amazon US",
+      "scene_template": "lifestyle-scene.json"
+    },
+    "expected_output": {
+      "important_details_must_exclude": ["治疗", "therapy", "treat", "chronic pain", "cervical"],
+      "constraints_must_include": ["do not include treatment claims", "do not include medical benefit"]
+    },
+    "expected_demotion_log": [
+      "「治疗颈椎病，缓解慢性疼痛」→ 已删除（原因：医疗功效宣称，产品无医疗器械资质）"
+    ]
+  },
+  {
+    "id": "fab-map-05",
+    "description": "style-blacklist 品类冲突覆盖 FAB 卖点",
+    "input": {
+      "feature": "无线充电器，15W 快充",
+      "feature_evidence": "已确认",
+      "advantage": "兼容 iPhone 和 Android",
+      "advantage_evidence": "已确认",
+      "benefit": "桌面整洁，复古怀旧风格布置",
+      "benefit_evidence": "有依据",
+      "evidence_items": [],
+      "platform": "Amazon US",
+      "scene_template": "lifestyle-scene.json",
+      "category": "Electronics"
+    },
+    "expected_output": {
+      "important_details_must_exclude": ["vintage", "retro", "怀旧"],
+      "constraints_must_include": ["no vintage", "no retro"]
+    },
+    "expected_conflict_resolution": "Electronics 品类 style-blacklist 禁止 vintage/retro，Benefit 中的怀旧风格描述被删除",
+    "notes": "style-blacklist > FAB 卖点，品类风格冲突删除相关 Benefit 描述"
+  },
+  {
+    "id": "fab-map-06",
+    "description": "constraints 槽覆盖验证：Electronics 品类需注入 style-blacklist 风格过滤和 slop 词禁用",
+    "input": {
+      "feature": "蓝牙 5.3 芯片，续航 50 小时",
+      "feature_evidence": "已确认",
+      "advantage": "连接更稳定",
+      "advantage_evidence": "有依据",
+      "benefit": "旅途中持续使用",
+      "benefit_evidence": "有依据",
+      "evidence_items": [],
+      "platform": "Amazon US",
+      "scene_template": "hero-image.json",
+      "category": "Electronics"
+    },
+    "expected_output": {
+      "constraints_must_include": [
+        "RGB(255,255,255)",
+        "85%",
+        "no vintage",
+        "no retro"
+      ],
+      "constraints_slop_must_include_at_least_one": [
+        "stunning",
+        "breathtaking",
+        "game-changing",
+        "revolutionary",
+        "do not use"
+      ]
+    },
+    "notes": "Electronics 品类 constraints 必须包含：(1) 平台约束(白底/占比)，(2) 品类风格黑名单(no vintage/retro)，(3) slop 词禁用指令。三类缺一不可。"
+  }
+]
