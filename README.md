@@ -52,7 +52,7 @@ ecommerce-visual/
 │   └── default-style-lock.json     # 默认风格锁（10 字段 + 品类覆盖）
 └── evals/
     ├── trigger-evals.json          # Step 0 路由 golden cases（18 条）
-    └── fab-mapping-evals.json      # FAB→5-slot 映射 golden cases（5 条）
+    └── fab-mapping-evals.json      # FAB→5-slot 映射 golden cases（6 条）
 ```
 
 ---
