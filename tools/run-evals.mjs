@@ -19,6 +19,7 @@ const envGet = (k) => process.env[k] ?? ENV.match(new RegExp(`^${k}=(.*)$`, "m")
 const BASE = envGet("CLIPFORGE_LLM_BASE_URL");
 const KEY = envGet("CLIPFORGE_LLM_API_KEY");
 const MODEL = envGet("CLIPFORGE_LLM_MODEL");
+const EFFORT = process.argv.includes("--effort") ? process.argv[process.argv.indexOf("--effort") + 1] : "low";
 
 async function llm(system, user) {
   const r = await fetch(`${BASE.replace(/\/$/, "")}/chat/completions`, {
@@ -27,7 +28,7 @@ async function llm(system, user) {
     body: JSON.stringify({
       model: MODEL,
       temperature: 0,
-      reasoning_effort: "low",
+      reasoning_effort: EFFORT,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },
