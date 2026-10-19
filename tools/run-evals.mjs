@@ -143,6 +143,8 @@ fs.writeFileSync(
     {
       at: new Date().toISOString(),
       model: MODEL,
+      effort: EFFORT,
+      skill_rule_platform_default: true,
       knowledge: "full-mode 6 files（生产映射）",
       triggerPass,
       triggerTotal: triggerEvals.length,
