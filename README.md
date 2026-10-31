@@ -1,4 +1,4 @@
-# Listing Shot
+# Listing Image
 
 ![hero](assets/hero.png)
 
@@ -49,7 +49,7 @@
 ## 文件结构
 
 ```
-listing-shot/
+listing-image/
 ├── SKILL.md                        # 入口路由（≤80 行）
 ├── modes/
 │   ├── mode-full.md                # 完整流程：套图 / Listing
