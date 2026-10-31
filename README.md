@@ -1,21 +1,48 @@
 # E-Commerce Visual
 
-给跨境电商卖家提供端到端出图能力，出图质量达到专业电商设计师水准。
+![hero](assets/hero.png)
 
-> ⚠️ **数据隐私提示**
-> API 模式会把产品图和参考图上传到你配置的端点（`IMAGE_API_BASE`）。请只使用你有权上传的素材，并先确认端点的数据保留与隐私条款。
-> 如对数据敏感，使用 manual 模式（`--mode manual`）导出 prompt 包，不上传任何内容。
+跨境电商 listing 套图生成工具。输入产品信息，自动完成策划分析、Prompt 组装和合规检查，调用图片接口输出可直接使用的电商图片素材。
 
 ---
 
-## 快速上手
+## 功能概览
 
-在 Claude Code 里直接描述你的产品和目标平台，Skill 会自动路由到正确的模式：
+**套图生成**：从产品信息出发，生成完整 listing 套图——主图、场景图、细节图、对比图。适合亚马逊、Shopify 等跨境平台上新。
 
-- **套图 / Listing 任务** → 完整 6 步流程（主路径）
-- **单张快速出图** → 跳过策划层，直接生成
-- **审查现有图** → 找最严重的一个问题 + 最小修改方案
-- **批量/动图/换品/换色/抠图** → 编辑型或生成型批量流程
+**单张出图**：描述具体需求直接生成，不走完整套图流程。适合补图、测试风格、快速验证。
+
+**审查改稿**：上传现有图片，找出最严重的问题并给出最小修改方案。
+
+**批量编辑**：换背景、换颜色、换产品、抠图、GIF 动图等批量任务。
+
+---
+
+## 工作原理
+
+### 策划层自动执行
+
+用户只需描述产品，工具在内部完成成交驱动力分析、证据账本整理、FAB 过滤和 5-slot Prompt 组装，不需要手动经历这些步骤。相关规则定义在 `core/prompt-assembly.md` 和 `planning/`。
+
+### 合规提前分流
+
+任务开始时就判断目标平台（跨境 / 国内 / 社媒），三条合规路径从此独立处理。图片技术规范和 AI 标注要求在 `compliance/platform-constraints.md`，文案宣称审查规则在 `compliance/copywriting-rules.md`。
+
+### 全局合规红线
+
+所有路径强制执行：D 类拦截（复刻可识别真人）、不剥离 C2PA 元数据、不教唆规避 AI 标注要求、不造假实拍。
+
+### 39 个场景模板
+
+`production/scenarios/` 内置 39 个场景模板 JSON，覆盖主图、场景图、细节、对比、GIF、A+ 模块、直播图、节日活动等类型，开箱即用。
+
+---
+
+## 输出通道
+
+**API 模式（默认）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。
+
+**Manual 模式（`--mode manual`）**：导出完整 prompt 包，不上传任何内容。适合数据敏感场景，或在其他工具里手动生成。
 
 ---
 
@@ -25,16 +52,16 @@
 ecommerce-visual/
 ├── SKILL.md                        # 入口路由（≤80 行）
 ├── modes/
-│   ├── mode-full.md                # 完整流程：套图/Listing
+│   ├── mode-full.md                # 完整流程：套图 / Listing
 │   ├── mode-single.md              # 单张出图
 │   ├── mode-review.md              # 审查改稿
-│   └── mode-bulk.md                # 批量/进阶能力
+│   └── mode-bulk.md                # 批量 / 进阶能力
 ├── core/
 │   └── prompt-assembly.md          # FAB→5-slot 映射规则 + 完整示例
 ├── planning/
 │   ├── conversion-driver.md        # 成交驱动力诊断
-│   └── evidence-rules.md           # 证据账本规则（精简版）
-├── production/                     # 场景模板与生产方法论
+│   └── evidence-rules.md           # 证据账本规则
+├── production/
 │   ├── scenarios/                  # 39 个场景模板 JSON
 │   ├── craft.md
 │   ├── model-routing.md
@@ -44,7 +71,7 @@ ecommerce-visual/
 │   └── campaign-style-lock.md
 ├── compliance/
 │   ├── platform-constraints.md     # 跨境图片技术规范 + AI 标注
-│   └── copywriting-rules.md        # 文案宣称审查（精简版）
+│   └── copywriting-rules.md        # 文案宣称审查
 ├── scripts/
 │   ├── imagegen.sh                 # 出图脚本（api / manual 双通道）
 │   └── compliance_check.py         # 主图技术预检（白底 / 占比 / OCR）
@@ -57,19 +84,7 @@ ecommerce-visual/
 
 ---
 
-## 设计原则
-
-**策划层后置，不暴露给用户**：证据账本、成交驱动力、FAB 过滤在 Prompt 组装时自动执行，不是用户需要经历的步骤。
-
-**合规先分流**：Step 0 路由时就判断平台（跨境/国内/社媒），三套合规路径从此分开，不在生成后才补。
-
-**生产层即拿即用**：`production/`、`scripts/`、`assets/` 是稳定的生产资产——39 个场景模板、出图脚本、技术预检、风格锁均已就绪。本套件的增量是把证据账本和 FAB 转化逻辑注入 Prompt 组装步骤，形成从策划到出图的完整链路。
-
-**全局合规红线（所有路径均强制）**：D 类拦截（复刻真人）+ 三不红线（不剥离 C2PA、不教唆规避 AI 标注、不造假实拍）。
-
----
-
-## 成功指标
+## 质量基线
 
 | 指标 | 目标值 |
 |------|--------|
@@ -80,13 +95,13 @@ ecommerce-visual/
 
 ---
 
-## 范围边界（Out of Scope）
+## 不覆盖的范围
 
 - 视频剪辑、短视频脚本
 - 广告投放策略
 - 图片压缩、格式转换
-- 纯 SEO/关键词研究
+- 纯 SEO / 关键词研究
 - 发布到平台（只到素材交付）
 - 复刻可识别真人（D 类，主动拦截）
-- 国内平台图片技术预检（Step 1 已告知，需人工核对）
+- 国内平台图片技术预检（Step 1 有提示，需人工核对）
 - edit 类模板的 `ref_roles` / `text_assets` preserve 注入未实现；编辑型任务的产品保真依赖 prompt 措辞，非自动保障
