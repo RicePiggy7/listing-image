@@ -57,10 +57,10 @@
       "scene_template": "lifestyle-scene.json"
     },
     "expected_output": {
-      "important_details_must_include": ["handcrafted", "hand-woven", "Vietnam"],
+      "important_details_must_include": ["handwoven", "Vietnam"],
       "constraints_must_include": ["FDA"]
     },
-    "notes": "FDA 认证进 constraints verification note；「手工编织工艺」进 important_details 末尾"
+    "notes": "FDA 认证进 constraints verification note；「手工编织工艺」进 important_details 末尾。工艺词断言用 handwoven（归一化后同时匹配 hand-woven/handwoven，不过度指定 handcrafted 双词并存）"
   },
   {
     "id": "fab-map-03",

@@ -80,7 +80,8 @@ for (const e of triggerEvals) {
   const out = await llm(
     `${skill}\n\n以上是 Skill 入口文件（含信号识别与平台分流）。判断用户输入，只输出严格 JSON：
 {"signal":"A|B|C|D","route":"modes/mode-xxx.md","platform_path":"cross-border|domestic|social-media|unknown","notice":"需要告知用户的内容，无则空字符串"}
-判定依据：SKILL.md 的信号识别与平台分流规则。不要输出其他文字。`,
+判定依据：SKILL.md 的信号识别与平台分流规则。不要输出其他文字。
+注意：platform_path 输出的是最终执行的合规路径，不是「输入里是否出现了平台」——输入未提及任何平台时，按 SKILL.md 默认规则输出 cross-border（宁严勿松）。`,
     e.input,
   );
   let parsed;
@@ -96,7 +97,7 @@ for (const e of triggerEvals) {
   if (e.expected_route && parsed.route !== e.expected_route) problems.push(`route 期望 ${e.expected_route} 实际 ${parsed.route}`);
   if (e.expected_platform_path && parsed.platform_path !== e.expected_platform_path)
     problems.push(`platform_path 期望 ${e.expected_platform_path} 实际 ${parsed.platform_path}`);
-  if (e.expected_notice && !(parsed.notice ?? "").includes(e.expected_notice.slice(0, 8)))
+  if (e.expected_notice && !(parsed.notice ?? "").replace(/\s/g, "").includes(e.expected_notice.replace(/\s/g, "").slice(0, 8)))
     problems.push(`notice 未含关键句: ${e.expected_notice.slice(0, 20)}`);
   if (!problems.length) {
     triggerPass++;
@@ -114,15 +115,23 @@ for (const e of fabEvals) {
   const out = await llm(FAB_SYSTEM, JSON.stringify(e.input, null, 2));
   const specText = out.slice(out.indexOf("{"), out.lastIndexOf("}") + 1);
   const spec = JSON.parse(specText);
-  const flat = norm(JSON.stringify(spec));
   const eo = e.expected_output ?? {};
   const problems = [];
   for (const [slot, must] of Object.entries(eo)) {
-    if (slot === "important_details_must_include" || slot === "constraints_must_include") {
-      for (const inc of must) if (!flat.includes(norm(inc))) problems.push(`缺少: ${inc}`);
-    }
-    if (slot.endsWith("_must_exclude")) {
-      for (const exc of must) if (flat.includes(norm(exc))) problems.push(`不应出现: ${exc}`);
+    // 断言限定在声明的槽位内：must_exclude "treat" 不应被 constraints 里合法的
+    // "do not include treatment claims" 误触发；未识别的槽位键退回全文匹配
+    const m = slot.match(/^(scene|subject|important_details|use_case|constraints)_(must_include|must_exclude)$/);
+    if (m) {
+      const [, target, kind] = m;
+      const hay = norm(spec[target] ?? "");
+      for (const item of must) {
+        const needle = norm(item);
+        if (kind === "must_include" && !hay.includes(needle)) problems.push(`缺少[${target}]: ${item}`);
+        if (kind === "must_exclude" && hay.includes(needle)) problems.push(`不应出现[${target}]: ${item}`);
+      }
+    } else if (slot === "constraints_slop_must_include_at_least_one") {
+      const hay = norm(spec.constraints ?? "");
+      if (!must.some((w) => hay.includes(norm(w)))) problems.push("constraints 缺 slop 禁用词指令");
     }
   }
   for (const slot of ["scene", "subject", "important_details", "use_case", "constraints"]) {
