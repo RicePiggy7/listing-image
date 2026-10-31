@@ -64,7 +64,7 @@ const FAB_SYSTEM = `你是电商 Listing 图像 prompt 组装器。根据下方�
 3. 「禁止」状态：相关内容不得出现在任何槽位；constraints 必须逐字使用标准短语。健康/医疗功效宣称必须同时包含：do not include treatment claims 与 do not include medical benefit。
 4. 场景槽从场景模板或输入的 scene_template 结合商品合理填充。
 5. constraints 必须包含 4 类，写法统一：① 平台技术约束（如 pure white background RGB(255,255,255)、product occupies ≥85% of frame）；② 品类禁用风格用 no + 关键词逐项列出（Electronics 品类必写 no vintage, no retro）；③ slop 禁用词用 do not use + 词列表；④ 宣称边界用上述 do not include 标准短语。
-6. 冲突优先级：平台强制技术规范 > locked_immutable > style-blacklist > FAB 卖点。被平台规范覆盖的 locked 颜色/背景值不得残留在任何槽位（包括 scene 与 use_case）。
+6. 冲突优先级：平台强制技术规范 > locked_immutable > style-blacklist > FAB 卖点。被平台规范覆盖的 locked 颜色/背景值不得残留在任何槽位（包括 scene 与 use_case）；覆盖时 Constraints 只写目标值（如 pure white background RGB(255,255,255)），不得以「不要 X」式反向指令复述被覆盖值——图像模型对否定措辞易泄漏被禁属性。
 7. subject 槽是产品结构事实：忠实转写商品资料给出的结构细节，不得改写。
 
 【知识库】

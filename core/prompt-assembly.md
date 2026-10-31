@@ -55,6 +55,8 @@
 
 3. 如果 `style-blacklist.md` 对应品类禁止某风格（如 Electronics 禁止 vintage/retro），而场景模板建议 `vintage feel` → 删除该建议，不带入 Prompt
 
+4. 覆盖 `locked_immutable` 的颜色/背景等值时，Constraints **只写目标值**（如 `pure white background RGB(255,255,255)`），不写「不要 warm cream」式反向指令——图像模型对否定措辞容易泄漏被禁属性；被覆盖的 locked 值不得以任何形式（含 do not use 指令）出现在任何槽位
+
 ---
 
 ## 4. Constraints 槽必须包含的 4 类内容
