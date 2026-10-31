@@ -1,8 +1,8 @@
-# E-Commerce Visual
+# Listing Shot
 
 ![hero](assets/hero.png)
 
-跨境电商 listing 套图生成工具。输入产品信息，自动完成策划分析、Prompt 组装和合规检查，调用图片接口输出可直接使用的电商图片素材。
+跨境电商 Listing 套图生成工具。输入产品信息，自动完成策划分析、Prompt 组装和合规检查，调用图片接口输出可直接使用的电商图片素材。
 
 ---
 
@@ -49,7 +49,7 @@
 ## 文件结构
 
 ```
-ecommerce-visual/
+listing-shot/
 ├── SKILL.md                        # 入口路由（≤80 行）
 ├── modes/
 │   ├── mode-full.md                # 完整流程：套图 / Listing

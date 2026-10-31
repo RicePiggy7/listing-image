@@ -85,7 +85,7 @@
 3. slop 词过滤（`production/style-blacklist.md` 第二节）
 4. 文案宣称边界（待补证替换 + 禁止内容 `do not include` 指令）
 
-**4.4 模型选型**：读场景 JSON 的 `model_hint` 字段（`flare`/`sunburst`），告知用户。
+**4.4 模型选型**：读场景 JSON 的 `model_hint` 字段（`flare`/`sunburst`），告知用户。场景 JSON 未标 `model_hint` 时默认 `flare`（与 `production/model-routing.md` §五一致：edit 类与质量敏感类模板已在 JSON 标注，未标注场景一律快速模型）。
 
 ---
 

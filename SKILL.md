@@ -1,4 +1,10 @@
-# E-Commerce Visual
+---
+name: listing-shot
+description: 跨境电商 Listing 图端到端生成：产品资料 → 证据分级 → 成交驱动力诊断 → FAB→5-slot Prompt 组装 → 图像生成 → 平台合规预检（白底/占比/OCR）与 AI 标注合规。覆盖 Amazon/TikTok Shop/Shopify/速卖通/Temu 主图规范与淘宝/京东/拼多多/抖音文案宣称审查。支持 Listing 套图、单张产品图、审查改稿、批量编辑（换背景/换色/换品/抠图/GIF 动图/本地化）。不适用于短视频/直播口播话术；不自动上架或发布。
+allowed-tools: Bash(bash *), Bash(python3 *), Read, Write
+---
+
+# Listing Shot
 
 给跨境电商卖家提供端到端出图能力，出图质量达到专业电商设计师水准。
 

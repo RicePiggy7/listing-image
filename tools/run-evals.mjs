@@ -8,13 +8,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ENV = (() => {
-  try {
-    return fs.readFileSync(path.resolve(REPO, "..", "piggy-workbench", ".env"), "utf8");
-  } catch {
-    return "";
-  }
-})();
+const ENV = (["piggy-listing", "piggy-workbench"])
+  .map((dir) => {
+    try {
+      return fs.readFileSync(path.resolve(REPO, "..", dir, ".env"), "utf8");
+    } catch {
+      return "";
+    }
+  })
+  .find((content) => content !== "") ?? "";
 const envGet = (k) => process.env[k] ?? ENV.match(new RegExp(`^${k}=(.*)$`, "m"))?.[1];
 const BASE = envGet("CLIPFORGE_LLM_BASE_URL");
 const KEY = envGet("CLIPFORGE_LLM_API_KEY");
@@ -57,16 +59,19 @@ const loaded = KNOWLEDGE_FILES.map((rel) => `----- ${rel} -----\n${fs.readFileSy
 const FAB_SYSTEM = `你是电商 Listing 图像 prompt 组装器。根据下方知识库与商品资料，产出严格的 5-slot PromptSpec JSON（scene/subject/important_details/use_case/constraints，全部英文，值为字符串），不要输出任何其他文字。
 
 必须执行的知识规则：
-1. FAB→5-slot 映射：Feature→subject；Advantage→important_details 前置；Benefit→important_details 后置；认证类 Evidence→constraints 的 verification note；工艺/产地类→important_details 末尾。
-2. 「待补证」卖点必须降级为中性表达，并在 constraints 写 do not include 指令。
-3. 禁止性证据（标注「禁止」）→ 相关内容不得出现在任何槽位，且 constraints 写 do not include。
+1. FAB→5-slot 映射：Feature→subject；Advantage→important_details 前置；Benefit→important_details 后置；认证类 Evidence→constraints 的 verification note；工艺/产地类→important_details 末尾（工艺与产地关键词必须保留，如 handcrafted、hand-woven、Vietnam，不得省略或改写）。
+2. 「待补证」卖点必须降级为中性表达（删数字/倍数，改方向性描述），并在 constraints 逐字写入对应标准 do not include 短语（见 compliance/copywriting-rules.md §1）。
+3. 「禁止」状态：相关内容不得出现在任何槽位；constraints 必须逐字使用标准短语。健康/医疗功效宣称必须同时包含：do not include treatment claims 与 do not include medical benefit。
 4. 场景槽从场景模板或输入的 scene_template 结合商品合理填充。
-5. constraints 必须包含 4 类：平台技术约束、品类禁用风格、slop 禁用词、宣称边界。
-6. 冲突优先级：平台强制技术规范 > locked_immutable > style-blacklist > FAB 卖点。
+5. constraints 必须包含 4 类，写法统一：① 平台技术约束（如 pure white background RGB(255,255,255)、product occupies ≥85% of frame）；② 品类禁用风格用 no + 关键词逐项列出（Electronics 品类必写 no vintage, no retro）；③ slop 禁用词用 do not use + 词列表；④ 宣称边界用上述 do not include 标准短语。
+6. 冲突优先级：平台强制技术规范 > locked_immutable > style-blacklist > FAB 卖点。被平台规范覆盖的 locked 颜色/背景值不得残留在任何槽位（包括 scene 与 use_case）。
 7. subject 槽是产品结构事实：忠实转写商品资料给出的结构细节，不得改写。
 
 【知识库】
 ${loaded}`;
+
+// 归一化匹配：小写 + 去连字符/空白/下划线，避免 hand-woven vs handwoven、-42dB vs 42 dB 这类写法差异误判
+const norm = (s) => s.toLowerCase().replace(/[-\s_]/g, "");
 
 // ===== trigger evals =====
 let triggerPass = 0;
@@ -109,15 +114,15 @@ for (const e of fabEvals) {
   const out = await llm(FAB_SYSTEM, JSON.stringify(e.input, null, 2));
   const specText = out.slice(out.indexOf("{"), out.lastIndexOf("}") + 1);
   const spec = JSON.parse(specText);
-  const flat = JSON.stringify(spec).toLowerCase();
+  const flat = norm(JSON.stringify(spec));
   const eo = e.expected_output ?? {};
   const problems = [];
   for (const [slot, must] of Object.entries(eo)) {
     if (slot === "important_details_must_include" || slot === "constraints_must_include") {
-      for (const inc of must) if (!flat.includes(inc.toLowerCase())) problems.push(`缺少: ${inc}`);
+      for (const inc of must) if (!flat.includes(norm(inc))) problems.push(`缺少: ${inc}`);
     }
     if (slot.endsWith("_must_exclude")) {
-      for (const exc of must) if (flat.includes(exc.toLowerCase())) problems.push(`不应出现: ${exc}`);
+      for (const exc of must) if (flat.includes(norm(exc))) problems.push(`不应出现: ${exc}`);
     }
   }
   for (const slot of ["scene", "subject", "important_details", "use_case", "constraints"]) {
