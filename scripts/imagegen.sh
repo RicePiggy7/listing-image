@@ -396,7 +396,7 @@ spill_base64_to_file() {
     *) ext="png" ;;
   esac
   local tmp
-  tmp=$(mktemp -t imagegen.XXXXXX 2>/dev/null || return 1) || return 1
+  tmp=$(mktemp "${TMPDIR:-/tmp}/imagegen.XXXXXXXX" 2>/dev/null || return 1) || return 1
   rm -f "$tmp"  # mktemp made an empty file; re-add the chosen extension
   tmp="${tmp}.${ext}"
   if ! printf '%s' "$b64" | base64 -d > "$tmp" 2>/dev/null; then
@@ -520,7 +520,14 @@ generate_via_cli() {
 # ===========================================================================
 
 # Resolve credentials: IMAGE_API_* wins; legacy OPENAI_* respected.
-api_base()  { echo "${IMAGE_API_BASE:-${OPENAI_BASE:-https://api.openai.com}}"; }
+# api_base normalizes: strip trailing slashes and a trailing /v1 —
+# the POST paths below append /v1/images/... themselves; relays whose
+# base already ends in /v1 would otherwise double it (/v1/v1/...).
+api_base()  {
+  local b="${IMAGE_API_BASE:-${OPENAI_BASE:-https://api.openai.com}}"
+  b="${b%/}"; b="${b%/v1}"
+  echo "$b"
+}
 api_key()   { echo "${IMAGE_API_KEY:-${OPENAI_API_KEY:-}}"; }
 api_model() { echo "${IMAGE_MODEL:-gpt-image-2.5-flare}"; }
 
@@ -574,7 +581,7 @@ collect_api_response() {
       fi
     elif [[ -n "$url" ]]; then
       local tmp
-      tmp=$(mktemp -t imagegen_api.XXXXXX 2>/dev/null) || die 4 "mktemp failed"
+      tmp=$(mktemp "${TMPDIR:-/tmp}/imagegen_api.XXXXXXXX" 2>/dev/null) || die 4 "mktemp failed"
       rm -f "$tmp"; tmp="${tmp}.png"
       if ! curl -sS "$url" -o "$tmp" --max-time 120 2>/dev/null; then
         rm -f "$tmp"
@@ -667,7 +674,7 @@ generate_via_api() {
 
   # Build JSON body in a temp file (data URLs for reference images can be MBs).
   local body_file
-  body_file=$(mktemp -t imagegen_body.XXXXXX.json 2>/dev/null) || die 4 "mktemp failed"
+  body_file=$(mktemp "${TMPDIR:-/tmp}/imagegen_body.XXXXXXXX" 2>/dev/null) || die 4 "mktemp failed"
   {
     printf '{"model":%s,"prompt":%s,"n":%s' \
       "$(printf '%s' "$model" | jq -Rs .)" "$(printf '%s' "$prompt_text" | jq -Rs .)" "$COUNT"

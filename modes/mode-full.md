@@ -109,7 +109,7 @@ bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
 
 **单图总计 ≤3 轮**（三种失败原因共享该上限，而非各自独立 2 轮）。超限后停止重试，带缺陷交付：当前最佳图 + 具体失败原因 + 人工修改建议。
 
-回修时只改 Constraints 槽和 `product_presentation` 规则，不改 Lock 和 FAB 卖点。
+回修时只改 Constraints 槽和 `product_presentation` 规则，不改 Lock 和 FAB 卖点。**主图回修必须保持产品完整可见**——不得用「边缘裁切/出血式构图」凑占比指标（实测会产出顶带被裁的残缺产品，预检指标无法识别这类语义缺陷，需 vision 侧把关）。注意占比指标按「非白像素」保守计算，产品内部的镂空/白色区域会被计入背景，实际视觉占比高于读数。
 
 ### 5.3 AI 标注合规（Claude 人工判断）
 
