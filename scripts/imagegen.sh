@@ -601,6 +601,17 @@ collect_api_response() {
   [[ -n "$FINAL_COST" ]] && log_event "api_cost" "$FINAL_COST"
 }
 
+# curl_with_retry <args...>: run curl; on transport failure retry twice with
+# 2 s / 4 s backoff. Returns 1 only after all attempts fail.
+curl_with_retry() {
+  local attempt
+  for attempt in 1 2 3; do
+    if curl "$@" 2>/dev/null; then return 0; fi
+    (( attempt < 3 )) && sleep $((attempt * 2))
+  done
+  return 1
+}
+
 # api_post_generations <body-file>: POST the JSON body file; on success feed
 # the response to collect_api_response. Returns non-zero (via die) on failure.
 # Sets API_LAST_HTTP_CODE / API_LAST_BODY for the edits-fallback decision.
@@ -608,10 +619,10 @@ api_post_generations() {
   local body_file="$1"
   local base; base=$(api_base)
   local response http_code resp_body
-  response=$(curl -sS -w '\n%{http_code}' -X POST "${base}/v1/images/generations" \
+  response=$(curl_with_retry -sS -w '\n%{http_code}' -X POST "${base}/v1/images/generations" \
     -H "Authorization: Bearer $(api_key)" \
     -H "Content-Type: application/json" \
-    --data-binary "@${body_file}" --max-time "$TIMEOUT" 2>/dev/null) || \
+    --data-binary "@${body_file}" --max-time "$TIMEOUT") || \
     die 4 "cannot reach endpoint ${base}"
 
   http_code=$(echo "$response" | tail -n1)
@@ -649,7 +660,7 @@ api_post_edits() {
   args+=(--max-time "$TIMEOUT")
 
   local response http_code resp_body
-  response=$(curl "${args[@]}" 2>/dev/null) || die 4 "edits request failed (transport)"
+  response=$(curl_with_retry "${args[@]}") || die 4 "edits request failed (transport)"
   http_code=$(echo "$response" | tail -n1)
   resp_body=$(echo "$response" | sed '$d')
 
@@ -722,10 +733,10 @@ api_post_generations_soft() {
   local body_file="$1"
   local base; base=$(api_base)
   local response http_code resp_body
-  if ! response=$(curl -sS -w '\n%{http_code}' -X POST "${base}/v1/images/generations" \
+  if ! response=$(curl_with_retry -sS -w '\n%{http_code}' -X POST "${base}/v1/images/generations" \
       -H "Authorization: Bearer $(api_key)" \
       -H "Content-Type: application/json" \
-      --data-binary "@${body_file}" --max-time "$TIMEOUT" 2>/dev/null); then
+      --data-binary "@${body_file}" --max-time "$TIMEOUT"); then
     die 4 "cannot reach endpoint ${base}"
   fi
   http_code=$(echo "$response" | tail -n1)

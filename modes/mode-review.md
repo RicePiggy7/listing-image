@@ -36,13 +36,13 @@
    - 背景是否为纯白 RGB(255,255,255)
    - 产品占比是否 ≥85%
    - 是否包含不允许的文字/Logo
-3. **文案宣称问题**（对应 `compliance/copywriting-rules.md`）：
+4. **文案宣称问题**（对应 `compliance/copywriting-rules.md`）：
    - 是否有未经证实的具体数字
    - 是否有医疗/功效宣称
    - 是否有保证性表达
-4. **视觉质量问题**（对应 `production/style-blacklist.md` 第四节）：
+5. **视觉质量问题**（对应 `production/style-blacklist.md` 第四节）：
    - 反 AI 感 8 类特征
-5. **品类风格冲突**（对应 `production/style-blacklist.md`）
+6. **品类风格冲突**（对应 `production/style-blacklist.md`）
 
 ---
 

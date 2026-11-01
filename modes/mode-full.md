@@ -17,7 +17,8 @@
 提取以下信息：
 - 产品描述（必须）
 - 目标平台 / 市场（必须）
-- 参考图路径（有且**无额外卖点** → 直接进 Step 4，跳过 Step 2/3；有参考图**且用户同时提供卖点** → 执行 Step 2.1 证据分级，仍跳过 Step 3）
+- 参考图路径（记录路径；有且**无额外卖点** → 直接进 Step 3；有参考图**且用户同时提供卖点** → 执行 Step 2.1 证据分级，再进 Step 3）
+- **参考图特征提取（静默执行）**：有参考图时，vision 扫描参考图，逐部位提取材质与结构描述（例：「皮革耳垫 / 哑光硬壳罩体 / 金属 Y 形滑轨头带 / 旋转铝合金铰链」），将提取结果强制注入 Step 4 的 `subject` 与 `constraints` 槽；Step 5 调用 imagegen.sh 时必须以 `-i <参考图路径>` 传入。无法 vision 时跳过特征提取，仍须传 `-i`。
 - 套图张数 / 场景需求（如有）
 
 **国内平台告知**（如果目标平台是淘宝/天猫/京东/拼多多/抖音小店）：
@@ -94,7 +95,10 @@
 ### 5.1 调用 imagegen.sh
 
 ```bash
+# 无参考图
 bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
+# 有参考图（必须传 -i，脚本会自动走 img2img/edits 通道保持产品结构）
+bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api -i <ref_image_path>
 ```
 
 ### 5.2 技术预检（仅跨境平台）+ 有界回修循环
@@ -104,7 +108,7 @@ bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
 | 失败原因 | 定向修补策略 | 每种最多轮数 |
 |---------|------------|------------|
 | `white_bg: fail` | Constraints 强制注入 `pure white background RGB(255,255,255), no gradient, no texture` | 2 轮 |
-| `foreground_ratio: fail` | `product_presentation` 改为 `product occupies 90% of frame, fill-frame composition` | 2 轮 |
+| `foreground_ratio: fail` | 先 vision 复核：产品已完整占据视觉中心 → 标 informational 跳过回修，带注释交付；产品确实偏小 → `product_presentation` 改为 `product occupies 90% of frame, fill-frame composition` | 2 轮 |
 | `ocr_text: fail` | 删除场景模板 `text_assets` 字段，Constraints 加 `no text, no labels, no watermark` | 2 轮 |
 
 **单图总计 ≤3 轮**（三种失败原因共享该上限，而非各自独立 2 轮）。超限后停止重试，带缺陷交付：当前最佳图 + 具体失败原因 + 人工修改建议。
@@ -120,6 +124,8 @@ bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
 ### 5.4 视觉质量
 
 读 `production/style-blacklist.md` 第四节，执行反 AI 感 8 类特征检查。
+
+**套图跨图一致性**（套图 ≥2 张时，最后一张生成后执行）：用 vision 对比所有产出图与参考图（或主图），检查：耳垫/罩体材质、整体形态、关键结构件三个维度。发现漂移 → 在 Step 6 交付时标注「[图名] 存在 [漂移点]，建议人工替换」。不触发重新生成，由用户决定。
 
 ---
 

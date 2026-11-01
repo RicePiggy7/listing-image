@@ -90,7 +90,7 @@ listing-image/
 |------|--------|
 | Amazon 主图预检一次通过率 | ≥85% |
 | 套图任务零追问完成率 | ≥70% |
-| 单次调用加载参考文件数 | mode-single ≤3，mode-full ≤6 |
+| 单次调用加载参考文件数 | mode-single ≤5，mode-full ≤10 |
 | FAB→5-slot evals 通过率 | 100% |
 
 ---
@@ -104,4 +104,4 @@ listing-image/
 - 发布到平台（只到素材交付）
 - 复刻可识别真人（D 类，主动拦截）
 - 国内平台图片技术预检（Step 1 有提示，需人工核对）
-- edit 类模板的 `ref_roles` / `text_assets` preserve 注入未实现；编辑型任务的产品保真依赖 prompt 措辞，非自动保障
+- edit 类模板的 `ref_roles` / `text_assets` preserve 注入未实现；有参考图时 mode-full 会自动走 img2img/edits 通道并强制提取材质结构特征，但形态保真仍依赖端点能力，交付前需人工比对
