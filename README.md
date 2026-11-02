@@ -40,9 +40,9 @@
 
 ## 输出通道
 
-**主图合成管线（有参考图时）**：主图走「抠图 → 白底合成」（`scripts/composite_white.py`），产品区域保留原图像素，形态 100% 保真。场景图/lifestyle 图继续走 AI 生成管线。
+**主图合成管线（有参考图时，本地无 API）**：主图走 `rembg_cutout.py`（本地背景分离）→ `composite_white.py`（纯白底合成），产品区域保留原图像素，形态 100% 保真。依赖：`pip install rembg`（首次运行下载约 170MB U²-Net 模型到 `~/.u2net/`，后续缓存）。
 
-**API 生成模式（默认）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。
+**AI 生成管线（场景图 / 细节图 / 无参考图主图）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。无参考图主图标注「AI 合成，不保真」。
 
 **Manual 模式（`--mode manual`）**：导出完整 prompt 包，不上传任何内容。适合数据敏感场景，或在其他工具里手动生成。
 
@@ -75,9 +75,10 @@ listing-image/
 │   ├── platform-constraints.md     # 跨境图片技术规范 + AI 标注
 │   └── copywriting-rules.md        # 文案宣称审查
 ├── scripts/
-│   ├── imagegen.sh                 # 出图脚本（api / manual 双通道）
+│   ├── imagegen.sh                 # 出图脚本（api / manual 双通道，场景图/细节图用）
 │   ├── compliance_check.py         # 主图技术预检（白底 / 占比 / OCR）
-│   └── composite_white.py          # 透明 PNG → 纯白底合成（主图保真管线）
+│   ├── rembg_cutout.py             # 本地背景分离（主图保真管线第一步，需 pip install rembg）
+│   └── composite_white.py          # 透明 PNG → 纯白底合成（主图保真管线第二步）
 ├── assets/
 │   └── default-style-lock.json     # 默认风格锁（10 字段 + 品类覆盖）
 └── evals/

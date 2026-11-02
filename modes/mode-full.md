@@ -18,8 +18,8 @@
 提取以下信息：
 - 产品描述（必须）
 - 目标平台 / 市场（必须）
-- 参考图路径（记录路径；有且**无额外卖点** → 直接进 Step 3；有参考图**且用户同时提供卖点** → 执行 Step 2.1 证据分级，再进 Step 3）
-- **参考图特征提取（静默执行）**：有参考图时，vision 扫描参考图，逐部位提取材质与结构描述（例：「皮革耳垫 / 哑光硬壳罩体 / 金属 Y 形滑轨头带 / 旋转铝合金铰链」），将提取结果强制注入 Step 4 的 `subject` 与 `constraints` 槽；Step 5 调用 imagegen.sh 时必须以 `-i <参考图路径>` 传入。无法 vision 时跳过特征提取，仍须传 `-i`。
+- 参考图路径（记录路径；有且**无额外卖点** → 直接进 Step 3；有参考图**且用户同时提供卖点** → 执行 Step 2.1 + Step 2.2，再进 Step 3）
+- **参考图特征提取（静默执行）**：有参考图时，vision 扫描参考图，逐部位提取材质与结构描述（例：「皮革耳垫 / 哑光硬壳罩体 / 金属 Y 形滑轨头带 / 旋转铝合金铰链」），将提取结果强制注入 Step 4 的 `subject` 与 `constraints` 槽。无法 vision 时跳过特征提取。
 - 套图张数 / 场景需求（如有）
 
 **国内平台告知**（如果目标平台是淘宝/天猫/京东/拼多多/抖音小店）：
@@ -95,19 +95,21 @@
 
 ### 5.0 图类型分叉（每张图执行前判断）
 
-**主图（hero-image）且有参考图** → 走合成管线，不走生成：
+**主图（hero-image）且有参考图** → 走本地合成管线，不调用任何生成 API：
 
+```bash
+# Step A：本地抠图（无 API，不依赖端点能力）
+python3 scripts/rembg_cutout.py <ref_image_path> /tmp/cutout.png
+
+# Step B：白底合成
+python3 scripts/composite_white.py /tmp/cutout.png <output.png> --size 1000
 ```
-Step A: 抠图（走 transparent-cutout 场景模板，调用 imagegen.sh 传 -i）
-  bash scripts/imagegen.sh --prompt "<transparent-cutout prompt>" --mode api -i <ref_image_path>
 
-Step B: 白底合成（把抠图结果合成到纯白 1000×1000 画布）
-  python3 scripts/composite_white.py <cutout.png> <output.png> --size 1000
-```
+产品区域保留原图像素，形态 100% 保真。直接跳到 Step 5.2 预检，不走回修循环。
 
-合成管线产出的是原图像素，产品形态 100% 保真，**直接跳到 Step 5.2 预检，不走回修循环**。
+**主图且无参考图** → 走生成管线（5.1），Step 6 交付时标注：「⚠️ 无参考图，产品形态为 AI 合成，不保真，建议确认后再上架」。
 
-**所有其他图类型**（细节图/场景图/lifestyle 图）或**无参考图的主图** → 走生成管线（5.1）。
+**所有非主图场景**（细节图 / 场景图 / lifestyle 图）→ 走生成管线（5.1），传 `-i` 供风格参考。
 
 ---
 
@@ -116,7 +118,7 @@ Step B: 白底合成（把抠图结果合成到纯白 1000×1000 画布）
 ```bash
 # 无参考图
 bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
-# 有参考图（必须传 -i，脚本会自动走 img2img/edits 通道）
+# 有参考图（传 -i 供风格参考，非保真）
 bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api -i <ref_image_path>
 ```
 

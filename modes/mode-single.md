@@ -4,7 +4,7 @@
 - `core/prompt-assembly.md`（Prompt 组装，含 Constraints 槽注入规则）
 - `production/scenarios/`（场景路由）
 - `compliance/platform-constraints.md`（Layer 1 平台技术约束）
-- `production/scenarios/transparent-cutout.json`（Step 4 主图合成管线用）
+- `scripts/rembg_cutout.py` + `scripts/composite_white.py`（Step 4 主图合成管线）
 
 > `production/style-blacklist.md` 的品类冲突和 slop 词规则由 `core/prompt-assembly.md` 在 Step 3 Prompt 组装时按需指引读取；规则本体仍在 `style-blacklist.md`。
 
@@ -48,18 +48,16 @@
 
 ### Step 4：生成 + 预检
 
-**hero-image 且有参考图** → 走合成管线（不走生成）：
+**hero-image 且有参考图** → 走本地合成管线（不调用生成 API）：
 
-```
-Step A: 抠图
-  bash scripts/imagegen.sh --prompt "<transparent-cutout prompt>" --mode api -i <ref_image_path>
-Step B: 白底合成
-  python3 scripts/composite_white.py <cutout.png> <output.png> --size 1000
+```bash
+python3 scripts/rembg_cutout.py <ref_image_path> /tmp/cutout.png
+python3 scripts/composite_white.py /tmp/cutout.png <output.png> --size 1000
 ```
 
 合成产出直接进预检，不走回修循环。
 
-**其他场景或无参考图** → 调用 `scripts/imagegen.sh`。
+**其他场景或无参考图** → 调用 `scripts/imagegen.sh`（无参考图时 Step 5 标注「AI 合成，不保真」）。
 
 技术预检（仅跨境平台）：调用 `compliance_check.py`，有界回修，单图总计 ≤3 轮，超限带缺陷交付。
 

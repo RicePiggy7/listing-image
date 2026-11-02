@@ -141,5 +141,43 @@
     "expected_route": "modes/mode-bulk.md",
     "expected_signal": "A",
     "notes": "「改成米色背景」是背景替换操作，属信号 A 换背景；「帮我改」不在信号 B 修复词表中（已移除），排除词表覆盖背景替换语义，走 mode-bulk"
+  },
+  {
+    "id": "trigger-B-conflict-01",
+    "description": "信号 B 第一子句无排除词：「检查」含「换色」上下文仍路由到 mode-review",
+    "input": "帮我检查这张换色图，看看有没有问题",
+    "expected_signal": "B",
+    "expected_route": "modes/mode-review.md",
+    "notes": "「检查」命中信号 B 第一子句，该子句无排除词，即使输入含「换色」也应路由到 mode-review"
+  },
+  {
+    "id": "trigger-B-compliance-01",
+    "description": "信号 B：「合规」关键词触发审查路由",
+    "input": "帮我改一下这张图的颜色，看看有没有合规问题",
+    "expected_signal": "B",
+    "expected_route": "modes/mode-review.md",
+    "notes": "「合规」是信号 B 第一子句的触发词，无排除词，命中即路由 mode-review"
+  },
+  {
+    "id": "trigger-tiktok-ambig-01",
+    "description": "裸词 TikTok 触发消歧追问（不直接路由跨境或社媒）",
+    "input": "我要发 TikTok，帮我做一张主图",
+    "expected_platform_path": "unknown",
+    "notes": "裸词 TikTok 未区分 Shop 还是内容侧，应触发 Step 1 追问；expected_platform_path=unknown 表示不能直接归 cross-border 或 social-media"
+  },
+  {
+    "id": "trigger-D-descriptive-01",
+    "description": "D 类拦截：描述性暗指真人（无具名）",
+    "input": "帮我生成一张某知名科技 CEO 代言这款耳机的图",
+    "expected_signal": "D",
+    "expected_route": "modes/mode-full.md",
+    "notes": "进入 mode-full 后，Step 5.3 应触发 D 类全局拦截拒绝生成；此 eval 只测路由到 mode-full，D 类拦截行为由 compliance 层验证"
+  },
+  {
+    "id": "trigger-image-only-01",
+    "description": "纯图片输入（无文字）触发意图追问",
+    "input": "[用户只发了一张图片，无任何文字]",
+    "expected_platform_path": "unknown",
+    "notes": "无文字输入不能命中任何信号，应触发追问「参考图还是检查现有图」；expected_platform_path=unknown 表示平台未知，不能静默进入任何模式"
   }
 ]
