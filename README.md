@@ -1,111 +1,90 @@
 # Listing Image
 
-![hero](assets/hero.png)
-
-跨境电商 Listing 套图生成工具。输入产品信息，自动完成策划分析、Prompt 组装和合规检查，调用图片接口输出可直接使用的电商图片素材。
+跨境电商 Listing 图端到端生成工具。输入产品资料，输出可直接执行的视觉策划方案和/或图片文件。
 
 ---
 
-## 功能概览
+## 快速开始
 
-**套图生成**：从产品信息出发，生成完整 listing 套图——主图、场景图、细节图、对比图。适合亚马逊、Shopify 等跨境平台上新。
+配置三个环境变量后即可调用生图：
 
-**单张出图**：描述具体需求直接生成，不走完整套图流程。适合补图、测试风格、快速验证。
+```bash
+export IMAGE_API_BASE="https://api.openai.com"
+export IMAGE_API_KEY="sk-xxx"
+export IMAGE_MODEL="gpt-image-2.5-flare"
+```
 
-**审查改稿**：上传现有图片，找出最严重的问题并给出最小修改方案。
-
-**批量编辑**：换背景、换颜色、换产品、抠图、GIF 动图等批量任务。
-
----
-
-## 工作原理
-
-### 策划层自动执行
-
-用户只需描述产品，工具在内部完成成交驱动力分析、证据账本整理、FAB 过滤和 5-slot Prompt 组装，不需要手动经历这些步骤。相关规则定义在 `core/prompt-assembly.md` 和 `planning/`。
-
-### 合规提前分流
-
-任务开始时就判断目标平台（跨境 / 国内 / 社媒），三条合规路径从此独立处理。图片技术规范和 AI 标注要求在 `compliance/platform-constraints.md`，文案宣称审查规则在 `compliance/copywriting-rules.md`。
-
-### 全局合规红线
-
-所有路径强制执行：D 类拦截（复刻可识别真人）、不剥离 C2PA 元数据、不教唆规避 AI 标注要求、不造假实拍。
-
-### 39 个场景模板
-
-`production/scenarios/` 内置 39 个场景模板 JSON，覆盖主图、场景图、细节、对比、GIF、A+ 模块、直播图、节日活动等类型，开箱即用。
+无 API key 时用 `--mode manual` 导出 Prompt 包，自行生图。
 
 ---
 
-## 输出通道
+## 工作流
 
-**主图合成管线（有参考图时，本地无 API）**：主图走 `rembg_cutout.py`（本地背景分离）→ `composite_white.py`（纯白底合成），产品区域保留原图像素，形态 100% 保真。依赖：`pip install rembg`（首次运行下载约 170MB U²-Net 模型到 `~/.u2net/`，后续缓存）。
+skill 根据用户输入自动选择路径，用户无需指定 mode：
 
-**AI 生成管线（场景图 / 细节图 / 无参考图主图）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。无参考图主图标注「AI 合成，不保真」。
-
-**Manual 模式（`--mode manual`）**：导出完整 prompt 包，不上传任何内容。适合数据敏感场景，或在其他工具里手动生成。
+| 信号 | 触发条件 | 路径 |
+|---|---|---|
+| A | 有执行卡/Prompt，或说「生图」「出图」 | `modes/mode-gen.md` |
+| B | 说「策划」「执行卡」「Storyboard」，或只要方案 | `modes/mode-plan.md` |
+| C | 有产品资料且要图 / 端到端 / 未分类 | `modes/mode-full.md` |
+| D | 有现成图/稿，说「检查」「被拒」「改稿」 | `modes/mode-review.md` |
 
 ---
 
 ## 文件结构
 
 ```
-listing-image/
-├── SKILL.md                        # 入口路由（≤80 行）
-├── modes/
-│   ├── mode-full.md                # 完整流程：套图 / Listing
-│   ├── mode-single.md              # 单张出图
-│   ├── mode-review.md              # 审查改稿
-│   └── mode-bulk.md                # 批量 / 进阶能力
-├── core/
-│   └── prompt-assembly.md          # FAB→5-slot 映射规则 + 完整示例
-├── planning/
-│   ├── conversion-driver.md        # 成交驱动力诊断
-│   └── evidence-rules.md           # 证据账本规则
-├── production/
-│   ├── scenarios/                  # 39 个场景模板 JSON
-│   ├── craft.md
-│   ├── model-routing.md
-│   ├── motion-gif.md
-│   ├── style-blacklist.md
-│   ├── funnel-set.md
-│   └── campaign-style-lock.md
-├── compliance/
-│   ├── platform-constraints.md     # 跨境图片技术规范 + AI 标注
-│   └── copywriting-rules.md        # 文案宣称审查
-├── scripts/
-│   ├── imagegen.sh                 # 出图脚本（api / manual 双通道，场景图/细节图用）
-│   ├── compliance_check.py         # 主图技术预检（白底 / 占比 / OCR）
-│   ├── rembg_cutout.py             # 本地背景分离（主图保真管线第一步，需 pip install rembg）
-│   └── composite_white.py          # 透明 PNG → 纯白底合成（主图保真管线第二步）
-├── assets/
-│   └── default-style-lock.json     # 默认风格锁（10 字段 + 品类覆盖）
-└── evals/
-    ├── trigger-evals.json          # Step 0 路由 golden cases（18 条）
-    └── fab-mapping-evals.json      # FAB→5-slot 映射 golden cases（6 条）
+SKILL.md                        # 路由入口 + 开工问卷 + 运行原则
+modes/
+  mode-full.md                  # 端到端主路径（策划 → 确认 → 生图）
+  mode-plan.md                  # 纯策划（证据账本 → 驱动力 → 执行卡）
+  mode-gen.md                   # 纯生图（场景路由 → imagegen.sh）
+  mode-review.md                # 审查/改稿（六维检查 → 最小修改）
+planning/
+  evidence-rules.md             # 证据分级规则（已确认/有依据/待补证/禁止）
+  conversion-driver.md          # 六类成交驱动力诊断
+production/
+  scenarios/                    # 39 个场景模板 JSON
+  campaign-style-lock.md        # 套图视觉风格锁定协议
+  craft.md                      # 生图工艺清单 + 关键失败模式护栏
+  funnel-set.md                 # 漏斗槽位定义
+  style-blacklist.md            # 品类风格禁忌 + slop 词过滤
+  model-routing.md              # 模型选型建议
+  motion-gif.md                 # GIF 动图规格
+references/                     # 来自 feichanggege/ecommerce-visual-copywriting-skill（MIT）
+  output-contracts.md           # 执行卡格式合约
+  compliance-rules.md           # 广告法文案规则
+  copy-quality-rules.md         # 文案质量自检
+  platform-playbooks.md         # 多平台规则参考
+  source-notes.md               # 法规/平台规则核验来源（按需加载）
+examples/                       # 真实样本（来自 feichanggege）
+  README.md
+  durian-worked-example.md
+scripts/
+  imagegen.sh                   # 生图引擎（provider-agnostic，支持 api/manual 双模式）
+assets/
+  default-style-lock.json       # 无品牌规范时的风格 fallback
+evals/
+  trigger-evals.json            # 路由信号回归测试
+  fab-mapping-evals.json        # FAB→5-slot 映射测试
+tools/
+  run-evals.mjs                 # eval 执行脚本
 ```
 
 ---
 
-## 质量基线
+## 平台覆盖
 
-| 指标 | 目标值 |
-|------|--------|
-| Amazon 主图预检一次通过率 | ≥85% |
-| 套图任务零追问完成率 | ≥70% |
-| 单次调用加载参考文件数 | mode-single ≤5，mode-full ≤10 |
-| FAB→5-slot evals 通过率 | 100% |
+跨境：Amazon / TikTok Shop / Shopify / 速卖通 / Temu / Shopee / Lazada
+
+国内：淘宝 / 天猫 / 京东 / 拼多多 / 抖音小店 / 小红书 / 视频号
 
 ---
 
-## 不覆盖的范围
+## 边界
 
-- 视频剪辑、短视频脚本
-- 广告投放策略
-- 图片压缩、格式转换
-- 纯 SEO / 关键词研究
-- 发布到平台（只到素材交付）
-- 复刻可识别真人（D 类，主动拦截）
-- 国内平台图片技术预检（Step 1 有提示，需人工核对）
-- edit 类模板的 `ref_roles` / `text_assets` preserve 注入未实现；有参考图时 mode-full 会自动走 img2img/edits 通道并强制提取材质结构特征，但形态保真仍依赖端点能力，交付前需人工比对
+- 不生成 listing 文案文档（标题、五点描述）
+- 不做短视频/直播口播话术
+- 不自动上架或发布
+- 不编造资质、数据、功效或平台规则
+

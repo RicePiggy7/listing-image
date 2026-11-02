@@ -81,7 +81,7 @@
   "platform_constraints": {
     "amazon": {
       "main_image_rule": "若换回纯白底用作主图，必须满足背景 RGB≥250/占比≥85%/无文字",
-      "note": "换白底后用 compliance_check.py 复核白度"
+      "note": "换白底后人工确认背景是否纯白"
     }
   },
   "ref_roles": [

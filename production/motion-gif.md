@@ -64,4 +64,4 @@
 - **触发**：`scenarios/motion-gif.json`（Step 2 路由命中）
 - **模型**：sunburst（16 帧跨格一致性是精修能力，flare 易漂移）
 - **生成**：imagegen.sh 走 api 模式出帧图网格；切片/合成是本地后处理（Claude 用 Python PIL 完成切片+GIF/WebP 合成，不依赖外部服务）
-- **合规**：动图同样带 C2PA 标记；平台对主图动图（如 Amazon 主图视频位）有各自规范，投放前查 `platform-constraints.md`
+- **合规**：动图同样带 C2PA 标记；平台对主图动图（如 Amazon 主图视频位）有各自规范，投放前查 `references/platform-playbooks.md`

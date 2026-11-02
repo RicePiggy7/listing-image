@@ -33,5 +33,5 @@
       }
     }
   },
-  "platform_constraints": "translated claims must stay legally compliant in the target market (see platform-constraints.md Layer 2 for market-specific claim rules)"
+  "platform_constraints": "translated claims must stay legally compliant in the target market (see references/platform-playbooks.md for market-specific claim rules)"
 }
