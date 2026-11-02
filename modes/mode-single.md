@@ -1,9 +1,10 @@
 # mode-single.md：单张出图
 
-参考文件（共 3 个）：
+参考文件（共 4 个）：
 - `core/prompt-assembly.md`（Prompt 组装，含 Constraints 槽注入规则）
 - `production/scenarios/`（场景路由）
 - `compliance/platform-constraints.md`（Layer 1 平台技术约束）
+- `production/scenarios/transparent-cutout.json`（Step 4 主图合成管线用）
 
 > `production/style-blacklist.md` 的品类冲突和 slop 词规则由 `core/prompt-assembly.md` 在 Step 3 Prompt 组装时按需指引读取；规则本体仍在 `style-blacklist.md`。
 
@@ -47,7 +48,18 @@
 
 ### Step 4：生成 + 预检
 
-调用 `scripts/imagegen.sh`。
+**hero-image 且有参考图** → 走合成管线（不走生成）：
+
+```
+Step A: 抠图
+  bash scripts/imagegen.sh --prompt "<transparent-cutout prompt>" --mode api -i <ref_image_path>
+Step B: 白底合成
+  python3 scripts/composite_white.py <cutout.png> <output.png> --size 1000
+```
+
+合成产出直接进预检，不走回修循环。
+
+**其他场景或无参考图** → 调用 `scripts/imagegen.sh`。
 
 技术预检（仅跨境平台）：调用 `compliance_check.py`，有界回修，单图总计 ≤3 轮，超限带缺陷交付。
 

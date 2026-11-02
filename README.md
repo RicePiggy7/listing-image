@@ -40,7 +40,9 @@
 
 ## 输出通道
 
-**API 模式（默认）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。
+**主图合成管线（有参考图时）**：主图走「抠图 → 白底合成」（`scripts/composite_white.py`），产品区域保留原图像素，形态 100% 保真。场景图/lifestyle 图继续走 AI 生成管线。
+
+**API 生成模式（默认）**：产品图和参考图上传到 `IMAGE_API_BASE` 配置的端点，直接返回生成结果。使用前确认端点的数据保留和隐私条款，只上传有权使用的素材。
 
 **Manual 模式（`--mode manual`）**：导出完整 prompt 包，不上传任何内容。适合数据敏感场景，或在其他工具里手动生成。
 
@@ -74,7 +76,8 @@ listing-image/
 │   └── copywriting-rules.md        # 文案宣称审查
 ├── scripts/
 │   ├── imagegen.sh                 # 出图脚本（api / manual 双通道）
-│   └── compliance_check.py         # 主图技术预检（白底 / 占比 / OCR）
+│   ├── compliance_check.py         # 主图技术预检（白底 / 占比 / OCR）
+│   └── composite_white.py          # 透明 PNG → 纯白底合成（主图保真管线）
 ├── assets/
 │   └── default-style-lock.json     # 默认风格锁（10 字段 + 品类覆盖）
 └── evals/

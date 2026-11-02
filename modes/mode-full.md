@@ -1,6 +1,6 @@
 # mode-full.md：完整流程（套图/Listing 主路径）
 
-参考文件（按需加载，共 8 个）：
+参考文件（按需加载，共 9 个）：
 - `core/prompt-assembly.md`（Step 4 必读）
 - `planning/evidence-rules.md`（Step 2.1）
 - `planning/conversion-driver.md`（Step 2.2，驱动力诊断）
@@ -9,6 +9,7 @@
 - `compliance/platform-constraints.md`（Step 4.3）
 - `production/style-blacklist.md`（Step 4.3）
 - `production/campaign-style-lock.md`（Step 3，建 Lock）
+- `production/scenarios/transparent-cutout.json`（Step 5.0 主图合成管线用）
 
 ---
 
@@ -92,12 +93,30 @@
 
 ## Step 5：生成 + 预检 + 回修循环
 
-### 5.1 调用 imagegen.sh
+### 5.0 图类型分叉（每张图执行前判断）
+
+**主图（hero-image）且有参考图** → 走合成管线，不走生成：
+
+```
+Step A: 抠图（走 transparent-cutout 场景模板，调用 imagegen.sh 传 -i）
+  bash scripts/imagegen.sh --prompt "<transparent-cutout prompt>" --mode api -i <ref_image_path>
+
+Step B: 白底合成（把抠图结果合成到纯白 1000×1000 画布）
+  python3 scripts/composite_white.py <cutout.png> <output.png> --size 1000
+```
+
+合成管线产出的是原图像素，产品形态 100% 保真，**直接跳到 Step 5.2 预检，不走回修循环**。
+
+**所有其他图类型**（细节图/场景图/lifestyle 图）或**无参考图的主图** → 走生成管线（5.1）。
+
+---
+
+### 5.1 调用 imagegen.sh（生成管线）
 
 ```bash
 # 无参考图
 bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api
-# 有参考图（必须传 -i，脚本会自动走 img2img/edits 通道保持产品结构）
+# 有参考图（必须传 -i，脚本会自动走 img2img/edits 通道）
 bash scripts/imagegen.sh --prompt "<assembled_prompt>" --mode api -i <ref_image_path>
 ```
 
