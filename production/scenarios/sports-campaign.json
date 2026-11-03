@@ -75,7 +75,7 @@
     "sports_drink": "splash effects, condensation, vibrant energy colors, hydration theme"
   },
   "examples": [
-    "Sports advertising photo. {product} placed diagonally on reflective dark surface. Dramatic side lighting, speed lines around product. Bold headline text. Dynamic and energetic, 1080x1350px",
+    "Sports advertising photo. {product} placed diagonally on reflective dark surface. Dramatic side lighting, speed lines around product. Bold headline text. Dynamic and energetic, 1024x1280px",
     "Fitness brand campaign. Athletic model wearing {product}, seated on large dumbbell. Dark studio with reflective floor. Spotlight from above. 'STRENGTH' bold headline. Nike campaign quality,"
   ],
   "anti_ai_tips": "",
@@ -92,7 +92,7 @@
     "tiktok": {
       "aspect": "9:16",
       "background": "flexible",
-      "min_size": "1080x1920",
+      "min_size": "1024x1920",
       "note": "TikTok 运动广告素材,9:16 竖屏,动感大片。"
     }
   },

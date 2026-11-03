@@ -63,9 +63,9 @@
     "electronics": "host demonstrating features, hands-on product demo"
   },
   "examples": [
-    "Ultra-realistic Douyin livestream screenshot, phone screen capture. Host in casual {outfit}, minimal makeup, visible pores and skin texture, NOT retouched. Demonstrating {product}, showing details, other hand gesturing. Ring light natural shine, NOT plastic AI look. Background: real home setup - product shelf, whiteboard with prices, string lights, coffee mug. Phone UI: LIVE badge, viewer count, scrolling comments, product card with price, yellow buy button. Warm cast, slight noise, Kodak Portra 400 tone, NOT AI-generated look, 1080x1920px",
-    "Phone screenshot of livestream. Host holding {product}. Ring light catchlight. Product shelf behind. Phone noise, warm indoor, NOT professional, real livestream feel, 1080x1920px",
-    "Livestream scene. Host with {product} in home studio. Ring light, visible skin texture. Product display. Live UI elements. Authentic phone capture, 1080x1920px"
+    "Ultra-realistic Douyin livestream screenshot, phone screen capture. Host in casual {outfit}, minimal makeup, visible pores and skin texture, NOT retouched. Demonstrating {product}, showing details, other hand gesturing. Ring light natural shine, NOT plastic AI look. Background: real home setup - product shelf, whiteboard with prices, string lights, coffee mug. Phone UI: LIVE badge, viewer count, scrolling comments, product card with price, yellow buy button. Warm cast, slight noise, Kodak Portra 400 tone, NOT AI-generated look, 1024x1920px",
+    "Phone screenshot of livestream. Host holding {product}. Ring light catchlight. Product shelf behind. Phone noise, warm indoor, NOT professional, real livestream feel, 1024x1920px",
+    "Livestream scene. Host with {product} in home studio. Ring light, visible skin texture. Product display. Live UI elements. Authentic phone capture, 1024x1920px"
   ],
   "anti_ai_tips": "CRITICAL: (1) Phone screen capture style, (2) Ring light: circular catchlight in eyes, (3) Real skin: pores, undereye darkness, NOT smoothed, (4) Real environment: slightly messy, real objects, (5) Warm yellowish cast, (6) Slight noise, (7) 'NOT AI-generated look, NOT plastic smooth', (8) Kodak Portra 400 tone, (9) Realistic UI overlay",
   "supports_image_reference": true,
@@ -81,7 +81,7 @@
     "tiktok": {
       "aspect": "9:16",
       "background": "flexible",
-      "min_size": "1080x1920",
+      "min_size": "1024x1920",
       "note": "TikTok 直播切片/短视频封面,9:16 竖屏,含直播价格贴纸。"
     }
   },

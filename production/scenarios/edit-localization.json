@@ -78,9 +78,9 @@
     "sports": "US=力量竞技；EU=户外自然；SEA=潮流运动；JP=精致功能"
   },
   "examples": [
-    "Input: 护肤精华白底图（中文）。Output US 版：同一只精华（瓶身/logo/料体不变），背景换成现代浴室台面 + 多元肤色模特手持 + 英文功效标题 'Radiant Glow Serum'，简洁明亮西方审美，1080x1350px",
-    "Input: 零食包装白底图。Output SEA 版：同一包装（产品本体不变），场景换成鲜艳热带背景 + Shopee 风促销角标 + 印尼语 'PEDAS ENAK' + 高饱和暖色，促销活力感，1080x1080px",
-    "Input: 香水瓶白底图。Output ME 版：同一香水瓶（瓶身/液体/logo 不变），场景换成深色调奢华背景 + 金色几何伊斯兰纹样 + 阿拉伯文优雅排版 + 家族分享主题，金调奢华，1080x1350px"
+    "Input: 护肤精华白底图（中文）。Output US 版：同一只精华（瓶身/logo/料体不变），背景换成现代浴室台面 + 多元肤色模特手持 + 英文功效标题 'Radiant Glow Serum'，简洁明亮西方审美，1024x1280px",
+    "Input: 零食包装白底图。Output SEA 版：同一包装（产品本体不变），场景换成鲜艳热带背景 + Shopee 风促销角标 + 印尼语 'PEDAS ENAK' + 高饱和暖色，促销活力感，1024x1024px",
+    "Input: 香水瓶白底图。Output ME 版：同一香水瓶（瓶身/液体/logo 不变），场景换成深色调奢华背景 + 金色几何伊斯兰纹样 + 阿拉伯文优雅排版 + 家族分享主题，金调奢华，1024x1280px"
   ],
   "anti_ai_tips": "常见翻车：本地化文字渲染错（假字/错字/排版别扭）、文化元素刻板堆砌、产品被错误本地化改造。修复：text 用 ALL CAPS+逐字母回退，文化元素点到为止，product appearance 永远 preserve。",
   "supports_image_reference": true,

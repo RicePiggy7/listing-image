@@ -76,8 +76,8 @@
     "makeup": "bold lip or eye focus, product in hand, editorial beauty"
   },
   "examples": [
-    "Beauty magazine cover. Woman with glowing skin holding {product} near face. Beauty dish lighting, soft background. Top area for masthead. Vogue-quality editorial, 1080x1350px",
-    "Fashion editorial magazine cover. Striking woman wearing {product} in contemplative pose. Bold makeup, sleek hair. High-contrast editorial lighting. Magazine layout overlay with border frame. 1080x1350px"
+    "Beauty magazine cover. Woman with glowing skin holding {product} near face. Beauty dish lighting, soft background. Top area for masthead. Vogue-quality editorial, 1024x1280px",
+    "Fashion editorial magazine cover. Striking woman wearing {product} in contemplative pose. Bold makeup, sleek hair. High-contrast editorial lighting. Magazine layout overlay with border frame. 1024x1280px"
   ],
   "anti_ai_tips": "For authentic editorial feel: specify actual camera (Phase One IQ4, Canon EOS R5 85mm f/1.2), add visible skin texture, use real beauty lighting terminology",
   "supports_image_reference": true,
@@ -93,7 +93,7 @@
     "tiktok": {
       "aspect": "9:16",
       "background": "flexible",
-      "min_size": "1080x1920",
+      "min_size": "1024x1920",
       "note": "TikTok 时尚大片素材,9:16 竖屏。"
     }
   },

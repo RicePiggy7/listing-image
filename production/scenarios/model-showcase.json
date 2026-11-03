@@ -64,9 +64,9 @@
     "sports": "active pose in appropriate setting, show performance"
   },
   "examples": [
-    "Extreme close-up beauty macro, Canon EOS R5 100mm f/2.8 macro. Face filling 80% of frame, {product} being applied on {focus_area}. Skin incredibly detailed: pores, fine lines, natural imperfections, NOT retouched. Formula visible with realistic reflection. Natural side lighting. NOT AI-generated look, 1080x1350px",
-    "Fashion editorial. {person} with {product}, Canon EOS R5 85mm f/1.4. Natural window light, visible pores, natural shadows, authentic expression, soft bokeh, warm golden tones, 1080x1350px",
-    "Candid beauty moment. {person} with {product}, iPhone front camera. Natural lighting, visible pores and texture, relaxed candid, NOT AI-generated look, documentary style, 1080x1350px"
+    "Extreme close-up beauty macro, Canon EOS R5 100mm f/2.8 macro. Face filling 80% of frame, {product} being applied on {focus_area}. Skin incredibly detailed: pores, fine lines, natural imperfections, NOT retouched. Formula visible with realistic reflection. Natural side lighting. NOT AI-generated look, 1024x1280px",
+    "Fashion editorial. {person} with {product}, Canon EOS R5 85mm f/1.4. Natural window light, visible pores, natural shadows, authentic expression, soft bokeh, warm golden tones, 1024x1280px",
+    "Candid beauty moment. {person} with {product}, iPhone front camera. Natural lighting, visible pores and texture, relaxed candid, NOT AI-generated look, documentary style, 1024x1280px"
   ],
   "anti_ai_tips": "MANDATORY: (1) Real camera (Canon EOS R5 / Sony A7 IV), (2) Visible skin imperfections (pores, uneven tone, blemishes, fine lines), (3) Natural expression asymmetry, (4) 'NOT retouched, NOT AI-generated look', (5) Real lighting (natural window, NOT studio-perfect), (6) Natural hand details (knuckle lines, cuticle texture)",
   "supports_image_reference": true,

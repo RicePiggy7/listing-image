@@ -61,7 +61,7 @@
     "fashion": "size guide, material composition, care instructions"
   },
   "examples": [
-    "Complex Amazon A+ Content module. Top banner with brand and tagline. Main: 4 quadrants each showing product detail with labeled feature: (1) {f1}, (2) {f2}, (3) {f3}, (4) {f4}. Below: comparison table. Bottom: spec chart and certification badges. {color} palette. Mobile-first, professional e-commerce, 2000x2500px",
+    "Complex Amazon A+ Content module. Top banner with brand and tagline. Main: 4 quadrants each showing product detail with labeled feature: (1) {f1}, (2) {f2}, (3) {f3}, (4) {f4}. Below: comparison table. Bottom: spec chart and certification badges. {color} palette. Mobile-first, professional e-commerce, 2048x2560px",
     "Product infographic. Left: {product} on gradient. Right: {n} feature blocks with icons vertically, callout lines connecting to product. Clean modern, {color} accents, 2000x2000px",
     "{category} specification guide. Product centered with dimension callouts. Feature highlights with icons. Data visualization. Clean typography, mobile-friendly, 2000x2000px"
   ],
@@ -74,7 +74,7 @@
       "no_text_logo": false,
       "aspect": "1:1 or 4:5",
       "min_size": "970px (A+ module) / 1000px",
-      "note": "含卖点文字/图标标注,不适用 Amazon 主图(主图禁文字)。仅适用 A+ Content / 详情页附图。建议 2000x2500px。"
+      "note": "含卖点文字/图标标注,不适用 Amazon 主图(主图禁文字)。仅适用 A+ Content / 详情页附图。建议 2048x2560px。"
     }
   },
   "text_assets": {

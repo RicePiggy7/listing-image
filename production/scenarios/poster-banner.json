@@ -75,9 +75,9 @@
     "fashion": "editorial style, model inclusion, aspirational lifestyle"
   },
   "examples": [
-    "Luxury {category} campaign poster. Full-bleed gradient ivory to rose. Top: {headline} elegant serif. Center: {product} with decorative elements. {subtitle}. Bottom left: price {price} original crossed out. Bottom right: brand logo and {cta}. Gold foil accents, premium aesthetic, 2000x3000px",
+    "Luxury {category} campaign poster. Full-bleed gradient ivory to rose. Top: {headline} elegant serif. Center: {product} with decorative elements. {subtitle}. Bottom left: price {price} original crossed out. Bottom right: brand logo and {cta}. Gold foil accents, premium aesthetic, 2048x3072px",
     "{category} promotional poster. {product} centered on {background}. Bold {headline} at top, price {price}, {cta} button. Clean minimalist, accent colors, professional layout, 2000x2000px",
-    "Holiday {category} gift campaign. {background} with decorative elements. Center: {product} with gift wrapping. Headline {headline} modern script. Price tag {price} decorative frame. Festive sophisticated, warm cinematic lighting, 1080x1350px"
+    "Holiday {category} gift campaign. {background} with decorative elements. Center: {product} with gift wrapping. Headline {headline} modern script. Price tag {price} decorative frame. Festive sophisticated, warm cinematic lighting, 1024x1280px"
   ],
   "anti_ai_tips": "",
   "supports_image_reference": true,

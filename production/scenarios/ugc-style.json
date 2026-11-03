@@ -74,9 +74,9 @@
     "home": "product in actual living space, not perfectly styled"
   },
   "examples": [
-    "Bathroom mirror selfie, iPhone front camera. Person with {product}. Mirror has slight condensation. Warm yellowish indoor lighting. {product} label recognizable but not centered. Skin: visible pores, slight redness, NOT flawless. Warm yellow cast, phone noise, natural unposed, NOT AI-generated look, authentic UGC, 1080x1350px",
-    "Vintage 2005 CCD digicam photo, harsh direct flash. Heavy film grain, blown-out highlights on face, strong yellow-green color cast, chromatic aberration at edges. Person holding {product} with casual peace sign. Genuine candid expression. Dim bedroom with string lights, unmade bed. Off-center, slightly tilted composition. Red date stamp '06.12.25' in bottom-right corner. Low resolution, NOT sharp, NOT AI-generated look, raw snapshot, 1080x1350px",
-    "Authentic GRWM photo. Person in casual setting showing {product}. Natural imperfect lighting, slightly messy background. Phone selfie angle. Genuine expression. Warm tones, candid smartphone photography, NOT AI-generated look, 1080x1620px"
+    "Bathroom mirror selfie, iPhone front camera. Person with {product}. Mirror has slight condensation. Warm yellowish indoor lighting. {product} label recognizable but not centered. Skin: visible pores, slight redness, NOT flawless. Warm yellow cast, phone noise, natural unposed, NOT AI-generated look, authentic UGC, 1024x1280px",
+    "Vintage 2005 CCD digicam photo, harsh direct flash. Heavy film grain, blown-out highlights on face, strong yellow-green color cast, chromatic aberration at edges. Person holding {product} with casual peace sign. Genuine candid expression. Dim bedroom with string lights, unmade bed. Off-center, slightly tilted composition. Red date stamp '06.12.25' in bottom-right corner. Low resolution, NOT sharp, NOT AI-generated look, raw snapshot, 1024x1280px",
+    "Authentic GRWM photo. Person in casual setting showing {product}. Natural imperfect lighting, slightly messy background. Phone selfie angle. Genuine expression. Warm tones, candid smartphone photography, NOT AI-generated look, 1024x1536px"
   ],
   "anti_ai_tips": "CRITICAL: (1) Specify phone model (iPhone 14 Pro/15), (2) Add imperfection (pores, noise, warm cast, off-center), (3) Candid language (NOT professional), (4) Real environment (slightly messy), (5) Avoid AI words (no perfect, flawless, stunning), (6) State 'NOT AI-generated look', (7) Reference Kodak Portra 400 tone",
   "supports_image_reference": true,
@@ -92,7 +92,7 @@
     "tiktok": {
       "aspect": "9:16",
       "background": "flexible",
-      "min_size": "1080x1920",
+      "min_size": "1024x1920",
       "note": "TikTok UGC 短视频素材,9:16 竖屏,真实买家秀风格。"
     }
   },

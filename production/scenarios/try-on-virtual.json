@@ -61,9 +61,9 @@
     "electronics": "modern desk setup, in-use context, tech-forward"
   },
   "examples": [
-    "Cinematic luxury {category} integration. High-end {interior} with {materials}. {product} prominently displayed. Morning sunlight through frosted glass, ethereal light rays. Fresh flowers, botanical elements. Product label visible, ingredient card beside it. Decorative: tray, pearls, gold foil. Color: {colors}. Cinematic depth, warm grading, premium, 1080x1620px",
-    "{product} naturally in {scene}, morning sunlight, soft shadows, botanical touches, warm atmosphere, professional lifestyle photography, 1080x1350px",
-    "{product} integrated into complete {category} lifestyle scene. {person} at {location}, products arranged naturally, natural light, warm atmosphere. Professional lifestyle, 1080x1350px"
+    "Cinematic luxury {category} integration. High-end {interior} with {materials}. {product} prominently displayed. Morning sunlight through frosted glass, ethereal light rays. Fresh flowers, botanical elements. Product label visible, ingredient card beside it. Decorative: tray, pearls, gold foil. Color: {colors}. Cinematic depth, warm grading, premium, 1024x1536px",
+    "{product} naturally in {scene}, morning sunlight, soft shadows, botanical touches, warm atmosphere, professional lifestyle photography, 1024x1280px",
+    "{product} integrated into complete {category} lifestyle scene. {person} at {location}, products arranged naturally, natural light, warm atmosphere. Professional lifestyle, 1024x1280px"
   ],
   "anti_ai_tips": "",
   "supports_image_reference": true,
