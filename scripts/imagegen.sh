@@ -544,7 +544,7 @@ build_image_urls_json() {
       webp)     mime="image/webp" ;;
       *)        mime="image/png" ;;
     esac
-    b64=$(base64 -i "$img" 2>/dev/null) || b64=$(base64 "$img" 2>/dev/null)
+    b64=$(base64 -i "$img" 2>/dev/null | tr -d '\n') || b64=$(base64 "$img" 2>/dev/null | tr -d '\n')
     [[ -z "$b64" ]] && die 2 "failed to base64-encode reference image: $img"
     (( first )) || printf ','
     first=0

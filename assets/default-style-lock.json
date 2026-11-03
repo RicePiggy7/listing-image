@@ -3,7 +3,7 @@
     "name": "default-style-lock",
     "purpose": "Conservative fallback Style Lock when the user provides no brand spec. Safe for any category / region; never spectacular but never wrong.",
     "usage": "Read by Claude at SKILL.md Step 4 when (a) campaign task detected AND (b) no brand colors/fonts/VI supplied. Apply category_overrides.color_palette for the detected category, then apply region adjustments per campaign-style-lock.md section 6. Assemble the final 10 fields via prepend_template and prepend the rendered LOCK block verbatim to every image prompt in the set.",
-    "single_source_of_truth": "Field definitions and region table live in references/campaign-style-lock.md. This file holds ONLY the default values + category color branches. Do not duplicate region/lock semantics here.",
+    "single_source_of_truth": "Field definitions and region table live in production/campaign-style-lock.md. This file holds ONLY the default values + category color branches. Do not duplicate region/lock semantics here.",
     "version": "baseline"
   },
   "visual_direction": "commercial product photography, consistent across the entire set",
