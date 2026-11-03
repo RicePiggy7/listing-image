@@ -32,7 +32,7 @@
   },
   "defaults": {
     "orbit_direction": "from left to right",
-    "output_note": "generate the 16-frame grid ONCE, then slice cells and composite into GIF/WebP offline (see references/motion-gif.md for the full pipeline: grid -> slice -> loop -> compress)"
+    "output_note": "generate the 16-frame grid ONCE, then slice cells and composite into GIF/WebP offline (see production/motion-gif.md for the full pipeline: grid -> slice -> loop -> compress)"
   },
   "variants": {
     "loop-orbit": {

@@ -2,7 +2,7 @@
 
 > 套图一致性机制的设计意图。
 > 任何 ≥2 张图的「视觉资产套图」任务（Listing 套图 / A+ 模块组 / 季节 campaign / 多变体系列），都在这里锁定风格。
-> mode-full.md Step 3 指向本文件；`assets/default-style-lock.json` 是无品牌规范时的 fallback。
+> mode-plan.md Step 3 指向本文件；`assets/default-style-lock.json` 是无品牌规范时的 fallback。
 > 单一真理源原则：Lock 字段定义、prepend 机制、单张自由度、多变体规则、region 调整，**只在这里维护**。
 
 ---
@@ -12,7 +12,7 @@
 | 时机 | 动作 |
 |---|---|
 | 用户请求 ≥2 张图（"做一套 Listing 套图"/"5 张 A+"/"3 个颜色变体"） | 视为套图任务，`campaign=true`，建 Lock |
-| 用户只做 1 张图 | 跳过 Lock，直接 Step 4 组装 |
+| 用户只做 1 张图 | 跳过 Lock，直接进入 mode-gen 组装 |
 | 用户给了品牌规范（色板/字体/Logo/VI 手册） | 基于品牌规范建 Lock，覆盖默认 |
 | 用户没给任何品牌规范 | 读取 `assets/default-style-lock.json` 作为保守 fallback |
 | 同一 campaign 后续追加图（"再补一张场景图"） | 复用已建的 Lock 文本，prepend 到新图 prompt |
@@ -260,12 +260,12 @@ region 影响套图的审美偏好、肤色多样性、节日季、文化禁忌�
 
 | 步骤 | 与 Lock 的关系 |
 |---|---|
-| Step 1 意图识别 | 识别 `campaign=true`（≥2 张图）+ region（影响第六节调整） |
+| 路由后（意图识别完成） | 识别 `campaign=true`（≥2 张图）+ region（影响第六节调整） |
 | mode-plan Step 1 证据分级 | 卖点过滤，不影响 Lock |
 | mode-plan Step 2 驱动力诊断 | 驱动力影响套图槽位编排（见 `funnel-set.md`），不直接改 Lock |
-| **Step 3 建 Lock** | 读本文件建 10 字段，prepend 到后续每张图 |
-| Step 4 Prompt 组装 | 每张图的 5-slot prompt 前面拼 Lock 段；Scene 槽只写"这张图独特内容" |
-| Step 5 生成+预检 | Lock 段随 prompt 一起传给 imagegen.sh，脚本原样透传 |
+| **mode-plan Step 3 建 Lock** | 读本文件建 10 字段，prepend 到后续每张图 |
+| mode-plan Step 3 执行卡组装 | 每张图的 5-slot prompt 前面拼 Lock 段；Scene 槽只写"这张图独特内容" |
+| mode-gen Step 3 生图 | Lock 段随 prompt 一起传给 imagegen.sh，脚本原样透传 |
 | mode-plan 自审记录 | 检查套图一致性（色板/字体/光线是否漂移）+ region 禁忌是否触发 |
 
 ---

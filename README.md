@@ -19,7 +19,7 @@
 
 **输入**：产品名称 + 产品照 + 核心卖点（可选）
 
-**10 分钟内输出**：
+**输出**：
 1. **证据账本** — 哪些卖点能用（已确认/有依据），哪些要补证，哪些禁止，避免编造和违规
 2. **成交驱动力诊断** — 这个产品靠什么打动买家（视觉/痛点/参数/信任/情感/价格），决定套图重心
 3. **Storyboard + 执行卡** — 每张图的任务、画面、图内文案、5-slot 生图 Prompt、证据来源
@@ -109,6 +109,8 @@ export IMAGE_API_BASE="https://api.openai.com"
 export IMAGE_API_KEY="sk-xxx"
 export IMAGE_MODEL="gpt-image-2.5-flare"
 ```
+
+也可以免 export：在 skill 根目录（或运行目录）放 `.env` 文件自动加载（`IMAGEGEN_ENV=/path/.env` 可显式指定）；项目里已有的 `PIGGY_IMAGE_BASE_URL` / `PIGGY_IMAGE_API_KEY` / `PIGGY_IMAGE_MODEL` 变量会被自动识别为同义回退。已 export 的变量始终优先，不被 .env 覆盖。
 
 无 key 时用 `--mode manual` 导出 Prompt 包，自行生成。
 

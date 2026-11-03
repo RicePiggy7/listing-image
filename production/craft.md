@@ -31,7 +31,7 @@
 | 信息图 / A+ / 海报上的文字渲染出错（乱码 / 多字母 / 错字） | 五、文字渲染三招 |
 | 编辑类任务改错东西（动了不该动的标签/logo/形状） | 七、编辑保真工艺 |
 | 接触新品类，不知道该抓哪个视觉关键 | 六、品类视觉策略 |
-| Step 7 质量自检 | 全文 + `style-blacklist.md` 第二层（AI-tell 视觉特征） |
+| 生图后视觉自审 | 全文 + `style-blacklist.md` 第二层（AI-tell 视觉特征） |
 
 ---
 
@@ -324,7 +324,7 @@ diffused daylight, even illumination, minimal shadow
 
 ### 5.2 文字渲染三招（按优先级）
 
-> 模板的 `text_assets` 字段（brand_name / selling_points / price / copy）供 Agent 在 Step 5 组装时读取并应用这三招。
+> 模板的 `text_assets` 字段（brand_name / selling_points / price / copy）供 Agent 在 mode-gen Step 2 场景路由时读取并应用这三招。
 
 #### 招 1：自动包引号 + ALL CAPS
 
@@ -440,7 +440,7 @@ Image 2: background style reference — take only the scene/lighting mood
 ```
 
 - 角色不声明 → 模型把两张图的内容「融合」，产品和背景互相污染
-- 这与模板 `ref_roles` 字段（Step 5 手动注入）是同一机制，此处讲清为什么
+- 这与模板 `ref_roles` 字段（mode-gen Step 2 手动注入）是同一机制，此处讲清为什么
 
 ### 7.3 像素级不变的极限
 
@@ -462,7 +462,7 @@ Image 2: background style reference — take only the scene/lighting mood
 
 ---
 
-出图后（Step 7 质量自检）对照这个清单。命中任何一条 → 回到对应章节调 prompt 重生成（一轮一改纪律）。
+生图后对照这个清单。命中任何一条 → 回到对应章节调 prompt 重生成（一轮一改纪律）。
 
 **反 AI 感**（适用 UGC / 直播 / 社交）：
 - [ ] 皮肤有毛孔 / 纹理，不是塑料感？（→ 1.2 招 3）

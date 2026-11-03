@@ -4,8 +4,15 @@
 # Modes:
 #   api    (default) any OpenAI-compatible endpoint, env-configured:
 #            IMAGE_API_BASE   (default https://api.openai.com)
-#            IMAGE_API_KEY    (falls back to legacy $OPENAI_API_KEY)
-#            IMAGE_MODEL      (default gpt-image-2.5-flare; e.g. gpt-image-2.5-sunburst)
+#            IMAGE_API_KEY    (falls back to $PIGGY_IMAGE_API_KEY, then legacy
+#                              $OPENAI_API_KEY)
+#            IMAGE_MODEL      (default gpt-image-2.5-flare; e.g. gpt-image-2.5-sunburst;
+#                              falls back to $PIGGY_IMAGE_MODEL)
+#          .env auto-load: $IMAGEGEN_ENV, then <skill-root>/.env, then $PWD/.env
+#          (real environment always wins; file values never override exported vars).
+#          Project alias: PIGGY_IMAGE_BASE_URL / PIGGY_IMAGE_API_KEY /
+#          PIGGY_IMAGE_MODEL (piggy-listing/.env convention) are honored as
+#          fallbacks when the IMAGE_API_* variables are unset.
 #          Reference images ride in `image_urls` (data URLs); endpoints that
 #          reject that form fall back to the official /v1/images/edits.
 #   manual no API at all — exports a prompt pack (prompt.txt + request.json +
@@ -93,8 +100,10 @@ Modes:
   auto    - api if IMAGE_API_KEY (or legacy OPENAI_API_KEY) is set, else manual
   api     - Any OpenAI-compatible endpoint (official, relay, cloud gateway).
             Env: IMAGE_API_BASE (default https://api.openai.com),
-            IMAGE_API_KEY (falls back to OPENAI_API_KEY),
-            IMAGE_MODEL (default gpt-image-2.5-flare).
+            IMAGE_API_KEY (falls back to PIGGY_IMAGE_API_KEY, then
+            OPENAI_API_KEY), IMAGE_MODEL (falls back to PIGGY_IMAGE_MODEL).
+            .env files auto-load: $IMAGEGEN_ENV, <skill-root>/.env, $PWD/.env
+            (exported env vars always win over file values).
             Reference images go in `image_urls` (data URLs); endpoints that
             reject that form fall back to the official /v1/images/edits.
   manual  - No API call. Exports a prompt pack (prompt.txt + request.json +
@@ -193,6 +202,55 @@ die() {
 }
 
 trap emit_envelope EXIT
+
+# ---------------------------------------------------------------------------
+# Env-file auto-load + project alias fallback.
+#   Load order: $IMAGEGEN_ENV, then <skill-root>/.env, then $PWD/.env.
+#   Every file is parsed with KEY=VALUE lines (# comments, optional quotes);
+#   a variable already present in the process environment is NEVER overridden
+#   by file contents. Only bash-identifier keys are accepted; values are not
+#   eval'd (no code execution from env files).
+#   After loading, PIGGY_IMAGE_* project variables (piggy-listing/.env
+#   convention) are honored as fallbacks for IMAGE_API_BASE / IMAGE_API_KEY /
+#   IMAGE_MODEL when those are unset.
+# ---------------------------------------------------------------------------
+SKILL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/.." && pwd)"
+
+load_env_file() {
+  local f="$1" line key value n=0 is_set=""
+  [[ -f "$f" ]] || return 0
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+    case "$line" in "" | \#*) continue ;; esac
+    case "$line" in *=*) ;; *) continue ;; esac
+    key="${line%%=*}"
+    value="${line#*=}"
+    case "$value" in
+      \"*\") value="${value#\"}"; value="${value%\"}" ;;
+      \'*\') value="${value#\'}"; value="${value%\'}" ;;
+    esac
+    if ! [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+      continue
+    fi
+    eval "is_set=\"\${${key}+x}\""   # key is regex-validated above; safe eval
+    if [[ -z "$is_set" ]]; then
+      export "$key=$value"
+      n=$((n + 1))
+    fi
+  done < "$f"
+  if (( n > 0 )); then
+    log_event "env_file" "loaded=$f vars=$n"
+  fi
+  return 0
+}
+
+load_env_file "${IMAGEGEN_ENV:-}"
+load_env_file "$SKILL_ROOT/.env"
+load_env_file "$PWD/.env"
+
+IMAGE_API_BASE="${IMAGE_API_BASE:-${PIGGY_IMAGE_BASE_URL:-}}"
+IMAGE_API_KEY="${IMAGE_API_KEY:-${PIGGY_IMAGE_API_KEY:-}}"
+IMAGE_MODEL="${IMAGE_MODEL:-${PIGGY_IMAGE_MODEL:-}}"
 
 # ---------------------------------------------------------------------------
 # validate_size: GPT-Image-2/2.5 hard constraints.

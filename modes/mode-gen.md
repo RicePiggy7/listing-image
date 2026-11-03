@@ -16,7 +16,7 @@
 
 ## Step 3：生图
 
-从项目根目录运行；将下列路径替换为实际路径。API 模式需配置 `IMAGE_API_BASE`、`IMAGE_API_KEY`、`IMAGE_MODEL`，不输出密钥：
+从项目根目录运行；将下列路径替换为实际路径。API 模式需配置 `IMAGE_API_BASE`、`IMAGE_API_KEY`、`IMAGE_MODEL`，不输出密钥。环境来源三选一：直接 export；skill 根目录或项目根目录的 `.env` 自动加载（已导出的环境变量优先，不被文件覆盖）；或项目既有 `PIGGY_IMAGE_BASE_URL` / `PIGGY_IMAGE_API_KEY` / `PIGGY_IMAGE_MODEL` 变量（自动识别为同义回退）：
 
 ```bash
 OUTPUT_DIR="<输出目录>" bash scripts/imagegen.sh --mode api --size 1024x1024 --prompt-file "<输出目录>/prompt.txt"
