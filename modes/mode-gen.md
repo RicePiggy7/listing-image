@@ -10,7 +10,7 @@
 
 ## Step 2：场景路由
 
-从 `production/scenarios/` 的 39 个场景 JSON 中按关键词和画面任务匹配模板，补充光线、材质表现、构图细节。读取 `production/style-blacklist.md`，将品类禁忌风格和 slop 词注入 Negative Prompt。保留执行卡事实和风格约束，材质仅采用已确认资料；模板示例及平台约束均须核对，不能直接当作商品事实或最新规则。
+从 `production/scenarios/` 的 37 个场景 JSON 中按关键词和画面任务匹配模板，补充光线、材质表现、构图细节。读取 `production/style-blacklist.md`，将品类禁忌风格和 slop 词注入 Negative Prompt。保留执行卡事实和风格约束，材质仅采用已确认资料；模板示例及平台约束均须核对，不能直接当作商品事实或最新规则。
 
 将风格约束、完整五槽内容和 Negative Prompt 合并为可独立执行的 `prompt.txt`，保存到输出目录。
 

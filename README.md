@@ -6,6 +6,8 @@
 
 ## 快速开始
 
+**依赖**：需要 `jq`（JSON 处理工具），macOS `brew install jq`，Linux `apt install jq` 或 `yum install jq`。
+
 配置三个环境变量后即可调用生图：
 
 ```bash
@@ -44,7 +46,7 @@ planning/
   evidence-rules.md             # 证据分级规则（已确认/有依据/待补证/禁止）
   conversion-driver.md          # 六类成交驱动力诊断
 production/
-  scenarios/                    # 39 个场景模板 JSON
+  scenarios/                    # 37 个场景模板 JSON
   campaign-style-lock.md        # 套图视觉风格锁定协议
   craft.md                      # 生图工艺清单 + 关键失败模式护栏
   funnel-set.md                 # 漏斗槽位定义
