@@ -49,6 +49,6 @@ Flare 相比 GPT-Image-2 的官方发布口径是质量更高、延迟降低 50%
 
 ## 五、与场景模板的联动
 
-- `references/scenarios/*.json` 的 `model_hint` 字段（部分模板携带）给出该场景的建议模型——edit 类模板一律 sunburst，质量敏感类（A+/信息图/杂志/品牌故事）sunburst，其余默认 flare
+- `production/scenarios/*.json` 的 `model_hint` 字段（部分模板携带）给出该场景的建议模型——edit 类模板一律 sunburst，质量敏感类（A+/信息图/杂志/品牌故事）sunburst，其余默认 flare
 - `model_hint` 是建议不是强制：用户的通道若只有 2.0 模型（`gpt-image-2`），路由逻辑照常工作，只是放弃 2.5 增益
 - 调用侧：`IMAGE_MODEL` 环境变量或请求 JSON 的 `model` 字段最终决定——编排层把建议写进组装说明，通道层尊重用户配置

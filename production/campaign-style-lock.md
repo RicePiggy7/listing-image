@@ -261,12 +261,12 @@ region 影响套图的审美偏好、肤色多样性、节日季、文化禁忌�
 | 步骤 | 与 Lock 的关系 |
 |---|---|
 | Step 1 意图识别 | 识别 `campaign=true`（≥2 张图）+ region（影响第六节调整） |
-| Step 2.1 证据分级 | 卖点过滤，不影响 Lock |
-| Step 2.2 驱动力诊断 | 驱动力影响套图槽位编排（见 `funnel-set.md`），不直接改 Lock |
+| mode-plan Step 1 证据分级 | 卖点过滤，不影响 Lock |
+| mode-plan Step 2 驱动力诊断 | 驱动力影响套图槽位编排（见 `funnel-set.md`），不直接改 Lock |
 | **Step 3 建 Lock** | 读本文件建 10 字段，prepend 到后续每张图 |
 | Step 4 Prompt 组装 | 每张图的 5-slot prompt 前面拼 Lock 段；Scene 槽只写"这张图独特内容" |
 | Step 5 生成+预检 | Lock 段随 prompt 一起传给 imagegen.sh，脚本原样透传 |
-| Step 5.4 质量自检 | 检查套图一致性（色板/字体/光线是否漂移）+ region 禁忌是否触发 |
+| mode-plan 自审记录 | 检查套图一致性（色板/字体/光线是否漂移）+ region 禁忌是否触发 |
 
 ---
 

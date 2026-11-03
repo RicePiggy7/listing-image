@@ -64,11 +64,6 @@ scripts/
   imagegen.sh                   # 生图引擎（provider-agnostic，支持 api/manual 双模式）
 assets/
   default-style-lock.json       # 无品牌规范时的风格 fallback
-evals/
-  trigger-evals.json            # 路由信号回归测试
-  fab-mapping-evals.json        # FAB→5-slot 映射测试
-tools/
-  run-evals.mjs                 # eval 执行脚本
 ```
 
 ---

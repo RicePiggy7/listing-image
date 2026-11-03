@@ -1,6 +1,6 @@
 # 成交驱动力诊断（精简版）
 
-在 mode-full.md Step 2.2 静默执行。输出「主驱动力类型」，用于 Step 4 的 `important_details` 槽位排序。不生成 Storyboard 文档。
+在 mode-plan.md Step 2 执行（通过 mode-full 调用）。输出「主驱动力类型」，用于执行卡的 `important_details` 槽位排序。不生成 Storyboard 文档。
 
 ---
 
@@ -48,7 +48,7 @@
 
 ## 4. 输出格式
 
-Step 2.2 执行后输出（内部，不呈现给用户）：
+mode-plan Step 2 执行后输出（内部，不呈现给用户）：
 
 ```
 主驱动力：[视觉 | 痛点 | 参数 | 信任 | 情感]
@@ -56,4 +56,4 @@ Step 2.2 执行后输出（内部，不呈现给用户）：
 槽位优先级：[来自 funnel-set.md §二 对应行，如 1/3/6]
 ```
 
-此结果直接传入 Step 4.2 的 FAB→5-slot 映射，决定 `important_details` 槽内容的排列顺序。
+此结果直接传入 mode-plan Step 3 的 FAB→5-slot 映射，决定 `important_details` 槽内容的排列顺序。

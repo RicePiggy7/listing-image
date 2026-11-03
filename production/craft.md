@@ -310,7 +310,7 @@ diffused daylight, even illumination, minimal shadow
 
 ### 5.2 文字渲染三招（按优先级）
 
-> 模板的 `text_assets` 字段（brand_name / selling_points / price / copy）在 Step 5 组装时会**自动**应用这三招。
+> 模板的 `text_assets` 字段（brand_name / selling_points / price / copy）供 Agent 在 Step 5 组装时读取并应用这三招。
 
 #### 招 1：自动包引号 + ALL CAPS
 
@@ -353,7 +353,7 @@ render exactly the text "SALE 50% OFF", no extra words, no additional text anywh
 
 | 场景 | 策略 |
 |---|---|
-| 信息图 / A+ / 卖点图（必须含文字） | 三招全上（`text_assets` 字段自动处理） |
+| 信息图 / A+ / 卖点图（必须含文字） | 三招全上（`text_assets` 字段供 Agent 读取处理） |
 | Amazon 主图（平台禁文字） | 招 3（`no extra words, no text in image`）——防止模型擅自加字违规 |
 | 海报 / banner（文字是设计元素） | 招 1 + 招 3，文字尽量短（≤4 字母词最稳） |
 | UGC / 场景图（不该有明显文字） | 招 3（`no overlay text, no watermark`）——防止模型加假水印 / logo |

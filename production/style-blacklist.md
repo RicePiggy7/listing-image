@@ -2,11 +2,11 @@
 
 > 质量护栏的单一真理源。
 > 所有「品类×风格冲突规则」「slop 词过滤」「AI-tell 视觉特征判断」**只在这里维护**。
-> mode-full.md 的 Step 4.3（Constraints 槽）、Step 5.4（质量自检）和 `production/scenarios/*.json` 都指向本文件，禁止在其他地方重复定义。
+> mode-plan.md Step 3（组装 Constraints）和 `production/scenarios/*.json` 都指向本文件，禁止在其他地方重复定义。
 >
 > **Anti-Slop 双层过滤**：
-> - **第一层（slop 词过滤，第二节）**：在 prompt 文字层过滤 AI 感知词，Step 4.3 组装时删除或替换。
-> - **第二层（AI-tell 视觉特征，第四节）**：在出图后的视觉判断层检测 AI 告密特征，Step 5.4 由 Claude vision 主导（脚本不自动做）。
+> - **第一层（slop 词过滤，第二节）**：在 prompt 文字层过滤 AI 感知词，mode-plan Step 3 组装时删除或替换。
+> - **第二层（AI-tell 视觉特征，第四节）**：在出图后的视觉判断层检测 AI 告密特征，由 Claude vision 主导（脚本不自动做）。
 
 ---
 
